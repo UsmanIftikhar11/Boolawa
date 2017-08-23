@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Account extends AppCompatActivity
 {
-
+int i;
     private Button mLogOutBtn;
     private FirebaseAuth maAuth;
     private FirebaseAuth.AuthStateListener mauthListner;
