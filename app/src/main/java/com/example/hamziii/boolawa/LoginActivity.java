@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             {
                 if (firebaseAuth.getCurrentUser()!=null)
                 {
-                    startActivity(new Intent(LoginActivity.this, Account.class));
+                    startActivity(new Intent(LoginActivity.this, Main2Activity.class));
                 }
             }
         };
@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     progressDialog.hide();
                     Toast.makeText(LoginActivity.this,"Welcome  "+mEmail,Toast.LENGTH_SHORT).show();
-                    Intent intent_accountActivity = new Intent(LoginActivity.this,Account.class);
+                    Intent intent_accountActivity = new Intent(LoginActivity.this,Main2Activity.class);
                     startActivity(intent_accountActivity);
                 }
                 else
@@ -207,5 +207,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
+    public void onBackPressed() {
+        Intent startNewActivity= new Intent(LoginActivity.this,MainActivity.class);
+        startActivity(startNewActivity);
+    }
 }
