@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Boolawa</string>
+    <string name="title_activity_sign_up">SignUp</string>
+    <string name="facebook_login">1939450879634576</string>
+    <string name="title_activity_main2">BOOLAWA</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
