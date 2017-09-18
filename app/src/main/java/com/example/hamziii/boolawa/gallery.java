@@ -18,7 +18,8 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class gallery extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+    {
     private FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseAuth maAuth;
     @Override
@@ -27,7 +28,6 @@ public class gallery extends AppCompatActivity
         setContentView(R.layout.activity_gallery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         maAuth = FirebaseAuth.getInstance();
         mAuthListner = new FirebaseAuth.AuthStateListener()
@@ -42,7 +42,6 @@ public class gallery extends AppCompatActivity
                 }
             }
         };
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,7 +110,6 @@ public class gallery extends AppCompatActivity
                 maAuth.signOut();
                 break;
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -207,7 +207,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         Intent startNewActivity= new Intent(LoginActivity.this,MainActivity.class);
         startActivity(startNewActivity);
     }
