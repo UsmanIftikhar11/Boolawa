@@ -45,6 +45,10 @@
         <activity
             android:name=".slideshow"
             android:label="@string/title_activity_slideshow"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DesignCards"
+            android:label="@string/title_activity_design_cards"
             android:theme="@style/AppTheme"></activity>
     </application>
 

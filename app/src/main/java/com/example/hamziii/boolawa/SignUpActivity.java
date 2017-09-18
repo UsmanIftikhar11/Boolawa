@@ -99,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
                 Users user = new Users(id, name1, email1, password1, r_password1);
                 databaseUser.child(name1).setValue(user);
 
-                progressDialog.setMessage("Zara Ghoot k rakhyn :D");
+                progressDialog.setMessage("Loading...");
                 progressDialog.show();
 
                 firebaseAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

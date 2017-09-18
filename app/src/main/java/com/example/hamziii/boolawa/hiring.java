@@ -1,10 +1,13 @@
 package com.example.hamziii.boolawa;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,13 +17,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import static java.sql.Types.NULL;
 
 public class hiring extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth.AuthStateListener mAuthListner;
     private FirebaseAuth maAuth;
+    private EditText budget_edittext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,4 +132,27 @@ public class hiring extends AppCompatActivity
         super.onStart();
         maAuth.addAuthStateListener(mAuthListner);
     }
+
+public void conform (View view) {
+    budget_edittext = (EditText) findViewById(R.id.budget_edittext);
+    String budget_text = budget_edittext.getText().toString();
+    if (budget_text.length() > 5 || budget_text.length() < 4) {
+
+            Toast.makeText(hiring.this, "budget should be in thousands", Toast.LENGTH_SHORT).show();
+
+
+    }
+    else
+        {
+        AlertDialog.Builder budget = new AlertDialog.Builder(this);
+        budget.setTitle("Your Budget");
+        budget.setMessage("We Will Inform You Within 48 hours").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+        }
+}
 }

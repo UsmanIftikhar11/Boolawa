@@ -144,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.hide();
                     Toast.makeText(LoginActivity.this,"Welcome  "+mEmail,Toast.LENGTH_SHORT).show();
                     Intent intent_accountActivity = new Intent(LoginActivity.this,Main2Activity.class);
+
                     startActivity(intent_accountActivity);
                 }
                 else

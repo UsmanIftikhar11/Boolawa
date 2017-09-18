@@ -26,7 +26,7 @@
     <Button
         android:id="@+id/design_card"
         style="@style/main2_buttons_style"
-        android:onClick="goToLoginActivity"
+        android:onClick="designingcards"
         android:text="design card"
         android:layout_below="@+id/view_invite"
 
