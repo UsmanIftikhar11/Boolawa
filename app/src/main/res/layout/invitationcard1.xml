@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_margin="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_invitation1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/invitation1" />
+
+        <TextView
+            android:id="@+id/txt_you_invited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"
+            android:text="You are Invited"
+            android:textColor="#FFC107"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_join_us"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_you_invited"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="Please join us for food and fun as we celebrate"
+            android:textColor="#FFC107"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/txt_event_title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_join_us"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="Dinner Party!!!!!!!!!"
+            android:textColor="#FFC107"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_event_date1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_event_title1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="100dp"
+            android:paddingRight="100dp"
+            android:text="Date"
+            android:textColor="#FFC107" />
+
+        <TextView
+            android:id="@+id/txt_event_time1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_event_date1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="100dp"
+            android:paddingRight="100dp"
+            android:text="Time"
+            android:textColor="#FFC107" />
+
+        <TextView
+            android:id="@+id/txt_event_adress1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_event_time1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:text="Adress"
+            android:textColor="#FFC107" />
+
+        <TextView
+            android:id="@+id/txt_last_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_event_adress1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="There will be games and goody bags for the kids"
+            android:textColor="#FFC107"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

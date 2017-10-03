@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id = "@+id/nav">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_account"
+            android:title="My Account"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
+            android:id="@+id/nav_contact"
+            android:title="Contact Us"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
+            android:id="@+id/nav_help"
+            android:title="Help"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
+            android:id="@+id/nav_exit"
+            android:title="Exit"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+    </group>
+
+</menu>

@@ -37,7 +37,7 @@
             style="@style/editText_style1"
             android:layout_marginTop="50dp"
             android:hint="Full Name"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
 
             />
 
@@ -46,7 +46,7 @@
             style="@style/editText_style1"
             android:layout_marginTop="10dp"
             android:hint="Email or Phone Number"
-            android:inputType="text" />
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/editText_password"

@@ -41,6 +41,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         databaseUser = FirebaseDatabase.getInstance().getReference("Users");
 
         name = (EditText) findViewById(R.id.editText_name);
@@ -48,7 +49,10 @@ public class SignUpActivity extends AppCompatActivity {
         password = (EditText)findViewById(R.id.editText_password);
         r_password = (EditText)findViewById(R.id.editText_r_password);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+         /*final String name1 = name.getText().toString();
+        final String email1 = email.getText().toString();
+        final String password1 = password.getText().toString();*/
+
         progressDialog = new ProgressDialog(this);
 
         Reg = (Button)findViewById(R.id.btn_register);
@@ -58,6 +62,9 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 fill_data();
+                /*Toast.makeText(getApplicationContext() , name1 , Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext() , email1 , Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext() , password1 , Toast.LENGTH_LONG).show();*/
             }
         });
 
@@ -76,14 +83,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void fill_data()
     {
-        String name1 = name.getText().toString();
+        final String name1 = name.getText().toString();
         String email1 = email.getText().toString();
         String password1 = password.getText().toString();
         String r_password1 = r_password.getText().toString();
 
         if (!TextUtils.isEmpty(name1) && !TextUtils.isEmpty(email1) &&!TextUtils.isEmpty(password1) && !TextUtils.isEmpty(r_password1))
         {
-            if (password1.length() < 6)
+            /*if (password1.length() < 6)
             {
                 Toast.makeText(SignUpActivity.this, "Password must be greater than 5 digits", Toast.LENGTH_SHORT).show();
             }
@@ -92,31 +99,37 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(SignUpActivity.this, "Password doesn't match", Toast.LENGTH_SHORT).show();
             }
             else
-                {
-                String id = databaseUser.push().getKey();
+                {*/
+                /*String id = databaseUser.push().getKey();
                 databaseUser.push().getKey();
 
                 Users user = new Users(id, name1, email1, password1, r_password1);
-                databaseUser.child(name1).setValue(user);
+                databaseUser.child(name1).setValue(user);*/
 
-                progressDialog.setMessage("Loading...");
-                progressDialog.show();
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.show();
 
                 firebaseAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            progressDialog.hide();
+
+                            String user_id = firebaseAuth.getCurrentUser().getUid();
+                            DatabaseReference current_user_db = databaseUser.child(user_id);
+                            current_user_db.child("name").setValue(name1);
+
+                            progressDialog.dismiss();
                             Toast.makeText(SignUpActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();
-                            Intent intent_goToLoginPage = new Intent(SignUpActivity.this,LoginActivity.class);
+                            Intent intent_goToLoginPage = new Intent(SignUpActivity.this,Home.class);
+                            intent_goToLoginPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent_goToLoginPage);
                         } else {
-                            progressDialog.hide();
+                            progressDialog.dismiss();
                             Toast.makeText(SignUpActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-            }
+            //}
         }
 
         else

@@ -14,4 +14,9 @@
     <string name="title_activity_gallery">gallery</string>
     <string name="title_activity_slideshow">slideshow</string>
     <string name="title_activity_design_cards">DesignCards</string>
+    <string name="title_activity_home">Home</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

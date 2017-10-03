@@ -11,15 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".Home" />
+        <activity
+            android:name=".SignUpActivity"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".PasswordResetActivity" />
         <activity
             android:name=".Main2Activity"
@@ -49,7 +53,14 @@
         <activity
             android:name=".DesignCards"
             android:label="@string/title_activity_design_cards"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ContactUs" />
+        <activity android:name=".Help" />
+        <activity android:name=".EventDetailsFromUser"></activity>
     </application>
 
 </manifest>

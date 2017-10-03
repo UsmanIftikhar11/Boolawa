@@ -63,7 +63,7 @@
             android:clickable="true"
             android:text="Forgot Password?"
             android:textColor="@color/white"
-            android:textSize="17dp"
+            android:textSize="17sp"
             android:onClick="goToPasswordResetActivity"
             />
 
@@ -82,9 +82,25 @@
             >
         </com.google.android.gms.common.SignInButton>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Or"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:layout_marginTop="40dp"/>
 
 
+        <Button
+            android:id="@+id/signup_button111"
+            android:text="SIGNUP"
+            style="@style/login"
+            android:layout_marginTop="50dp"
+            />
 
     </LinearLayout>
+
+
     </ScrollView>
 </RelativeLayout>

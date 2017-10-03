@@ -24,6 +24,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,13 +36,15 @@ public class LoginActivity extends AppCompatActivity {
     private SignInButton mGoogleBtn;
     private static final int RC_SIGN_IN=1;
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseAuth mAuth;
+
     private static final String TAG="MAIN_ACTIVITY";
-    private FirebaseAuth.AuthStateListener mAuthListner;
 
     private EditText mEmailField,mpasswordField;
-    private Button mloginBtn;
+    private Button mloginBtn , mbtnsignup;
 
+    private DatabaseReference mDatabaseusers ;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListner;
     ProgressDialog progressDialog;
 
     @Override
@@ -49,12 +56,22 @@ public class LoginActivity extends AppCompatActivity {
         mEmailField = (EditText)findViewById(R.id.editText_login_email);
         mpasswordField = (EditText)findViewById(R.id.editText_login_password);
         mloginBtn = (Button)findViewById(R.id.login_button111);
+        mbtnsignup = (Button)findViewById(R.id.signup_button111);
+
+        mbtnsignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this , SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         progressDialog = new ProgressDialog(this);
 
         mGoogleBtn = (SignInButton)findViewById(R.id.gogleBtn);
         mAuth = FirebaseAuth.getInstance();
-        mAuthListner = new FirebaseAuth.AuthStateListener() {
+        mDatabaseusers = FirebaseDatabase.getInstance().getReference().child("Users");
+        /*mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
             {
@@ -63,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(LoginActivity.this, Main2Activity.class));
                 }
             }
-        };
+        };*/
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -90,10 +107,79 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+        mloginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkLogin();
+            }
+        });
+    }
+
+    private void checkLogin() {
+
+        String email = mEmailField.getText().toString().trim();
+        String password = mpasswordField.getText().toString().trim();
+
+        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+
+            progressDialog.setMessage("Checking Login...");
+            progressDialog.show();
+
+            mAuth.signInWithEmailAndPassword(email , password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if(task.isSuccessful()){
+
+                        progressDialog.dismiss();
+                        checkUserExist();
+                    }
+                    else {
+                        progressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this , "Error Login " , Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+        }
+        else {
+            Toast.makeText(LoginActivity.this , "Fill all fields " , Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void checkUserExist() {
+
+        final String user_id = mAuth.getCurrentUser().getUid();
+        mDatabaseusers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.hasChild(user_id)){
+
+                    Intent mainIntent = new Intent(LoginActivity.this , Home.class);
+                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(mainIntent);
+
+                }
+                else {
+                    // later on give the link of edit page saying you have incomplete data fill details again
+                   /* Intent setupIntent = new Intent(CompanyLogin.this , CompanyRegistration.class);
+                    setupIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(setupIntent);*/
+                    Toast.makeText(LoginActivity.this , "Setup your account " , Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
-    protected void onStart()
+    /*protected void onStart()
     {
         super.onStart();
 
@@ -123,11 +209,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mAuth.addAuthStateListener(mAuthListner);
-    }
+    }*/
 
     //for Email Login
 
-    private void emailLogin()
+    /*private void emailLogin()
     {
     final String mEmail,mPassword;
         mEmail=mEmailField.getText().toString();
@@ -156,7 +242,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-    }
+    }*/
 
     private void signIn()
     {
