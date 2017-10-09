@@ -1,9 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.hamziii.boolawa.EventDetailsFromUser">
 
-</android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txt_event_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Enter event details below..."
+        android:textStyle="italic"
+        android:textSize="16sp"/>
+
+    <EditText
+        android:layout_below="@+id/txt_event_details"
+        android:id="@+id/editText_event_title"
+        style="@style/editText_style2"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Event Title"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:layout_below="@+id/editText_event_title"
+        android:id="@+id/editText_person_name"
+        style="@style/editText_style2"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="person name(for birthday only)"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:layout_below="@+id/editText_person_name"
+        android:id="@+id/editText_event_date"
+        style="@style/editText_style2"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Date"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:layout_below="@+id/editText_event_date"
+        android:id="@+id/editText_event_time"
+        style="@style/editText_style2"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Time"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:layout_below="@+id/editText_event_time"
+        android:id="@+id/editText_event_adress"
+        style="@style/editText_style2"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Adress"
+        android:inputType="textPostalAddress"/>
+
+    <EditText
+        android:layout_below="@+id/editText_event_adress"
+        android:id="@+id/editText_event_hostedBy"
+        style="@style/editText_style2"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Hosted By"
+        android:inputType="textPersonName"/>
+
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/savebtn_style"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/editText_event_hostedBy"
+        android:layout_marginTop="60dp"
+        android:text="done"/>
+
+</RelativeLayout>

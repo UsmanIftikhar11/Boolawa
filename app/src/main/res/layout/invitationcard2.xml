@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:layout_margin="20dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/layout_invitation2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
 
         <ImageView
             android:id="@+id/img_invitation2"
@@ -132,4 +141,26 @@
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/btn_saveCard2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_invitation2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Save"
+                android:background="@drawable/savebtn_style"/>
+
+            <Button
+                android:id="@+id/btn_editCard2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_saveCard2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Edit"
+                android:background="@drawable/savebtn_style"/>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

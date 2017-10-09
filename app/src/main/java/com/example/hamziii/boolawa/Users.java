@@ -10,45 +10,21 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Users
 {
-    String u_id;
-    String user_name;
-    String user_email;
-    String user_password;
-    String user_retype_password;
+    private String Image ;
 
-    public Users(String u_id, String user_name, String user_email, String user_password, String user_retype_password) {
-        this.u_id = u_id;
-        this.user_name = user_name;
-        this.user_email = user_email;
-        this.user_password = user_password;
-        this.user_retype_password = user_retype_password;
+    public Users(){
 
     }
 
-   /* public String getId()
-
-    {
-        return u_id;
+    public Users(String image) {
+        Image = image;
     }
 
-    public String getUser_name()
-    {
-        return user_name;
+    public String getImage() {
+        return Image;
     }
 
-    public String getUser_email()
-    {
-        return user_email;
+    public void setImage(String image) {
+        Image = image;
     }
-
-    public String getUser_passeord()
-    {
-        return user_password;
-    }
-
-    public String getUser_retype_password()
-    {
-        return user_retype_password;
-    }*/
-
 }
