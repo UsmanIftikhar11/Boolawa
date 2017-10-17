@@ -19,6 +19,11 @@
             android:icon="@drawable/ic_menu_gallery"/>
 
         <item
+            android:id="@+id/nav_navigate"
+            android:title="Get directions"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
             android:id="@+id/nav_exit"
             android:title="Exit"
             android:icon="@drawable/ic_menu_gallery"/>

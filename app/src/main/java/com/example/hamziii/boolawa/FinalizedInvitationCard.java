@@ -3,6 +3,7 @@ package com.example.hamziii.boolawa;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.view.accessibility.AccessibilityManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,12 +39,14 @@ public class FinalizedInvitationCard extends AppCompatActivity {
 
     private Button btn_saveCard1 , btn_editCard1 , btn_saveCard2 , btn_editCard2 , btn_saveCard3 , btn_editCard3;
 
+    RelativeLayout invitationLayout1 ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finalized_invitation_card);
+        //setContentView(R.layout.activity_finalized_invitation_card);
 
-        txt_check = (TextView)findViewById(R.id.txt_check);
+        //txt_check = (TextView)findViewById(R.id.txt_check);
 
 
         eventTitle = getIntent().getExtras().getString("EventTitle") ;
@@ -53,6 +56,8 @@ public class FinalizedInvitationCard extends AppCompatActivity {
         eventAdress = getIntent().getExtras().getString("EventAdress") ;
         eventHostedBy = getIntent().getExtras().getString("EventHostedBy") ;
         imgSampleNo = getIntent().getExtras().getInt("imgSampleNo");
+
+        invitationLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
 
         switch (imgSampleNo){
 
@@ -92,6 +97,24 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 btn_saveCard1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        invitationLayout1.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Bitmap image = takeImage(invitationLayout1) ;
+
+                                try {
+                                    if(image != null){
+                                        saveImage(image);
+                                        Toast.makeText(getApplicationContext() , "Saved" , Toast.LENGTH_LONG).show();
+                                    }
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
                         /*RelativeLayout invitationLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
                         Bitmap bitmap = Bitmap.createBitmap(invitationLayout1.getWidth(), invitationLayout1.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas c = new Canvas(bitmap);
@@ -104,7 +127,30 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                             out.close();
                         } catch (IOException e) {
                             e.printStackTrace();
+                        }
+                        try{
+                            RelativeLayout invitationLayout1 = (RelativeLayout)findViewById(R.id.abc);
+                            Bitmap bitmap = Bitmap.createBitmap(invitationLayout1.getMeasuredWidth(), invitationLayout1.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+                            Canvas c = new Canvas(bitmap);
+                            invitationLayout1.draw(c);
+
+                            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG , 100 , bao);
+
+                            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "invitation.png");
+                            file.createNewFile();
+
+                            FileOutputStream fos = new FileOutputStream(file);
+                            fos.write(bao.toByteArray());
+                            fos.close();
+                            fos.flush();
+
+                            Toast.makeText(getApplicationContext() , "Card Saved..." , Toast.LENGTH_LONG).show();
+
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }*/
+
 
                     }
 
@@ -114,6 +160,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(FinalizedInvitationCard.this , EventDetailsFromUser.class);
+                        intent.putExtra("imageNo" , imgSampleNo);
                         startActivity(intent);
                     }
                 });
@@ -137,17 +184,28 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         RelativeLayout shareLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
-                        shareLayout1.setDrawingCacheEnabled(true);
+                        //shareLayout1.setDrawingCacheEnabled(false);
                         shareLayout1.buildDrawingCache();
                         Bitmap bm1 = shareLayout1.getDrawingCache();
-                        ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
-                        bm1.compress(Bitmap.CompressFormat.JPEG, 100, bytes1);
+                        try {
+                            FileOutputStream fileOutputStream = new FileOutputStream(String.valueOf(bm1));
+                            bm1.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                            fileOutputStream.flush();
+                            fileOutputStream.close();
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        } finally {
+                            shareLayout1.destroyDrawingCache();
+                        }
+                        //ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
+                        //bm1.compress(Bitmap.CompressFormat.JPEG, 100, bytes1);
                     }
                 });
                 btn_editCard2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(FinalizedInvitationCard.this , EventDetailsFromUser.class);
+                        intent.putExtra("imageNo" , imgSampleNo);
                         startActivity(intent);
                     }
                 });
@@ -183,11 +241,56 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(FinalizedInvitationCard.this , EventDetailsFromUser.class);
+                        intent.putExtra("imageNo" , imgSampleNo);
                         startActivity(intent);
                     }
                 });
                 break;
         }
 
+    }
+
+    private Bitmap takeImage (View v){
+
+        Bitmap takeimage = null;
+
+        try {
+            int width = v.getMeasuredWidth() ;
+            int height = v.getMeasuredHeight() ;
+
+            takeimage = Bitmap.createBitmap(width , height , Bitmap.Config.ARGB_8888);
+
+            Canvas c = new Canvas(takeimage);
+            v.draw(c);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return takeimage ;
+    }
+
+    private void saveImage (Bitmap bm){
+
+        ByteArrayOutputStream bao = null ;
+        File file = null ;
+
+        try {
+            bao = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.PNG , 40 , bao);
+
+            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "card.png");
+            file.createNewFile();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bao.toByteArray());
+            fos.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        /*Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(Uri.fromFile(file));
+        sendBroadcast(intent);*/
     }
 }

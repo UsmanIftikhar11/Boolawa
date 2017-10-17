@@ -58,7 +58,7 @@ public class EventDetailsFromUser extends AppCompatActivity {
                 time_string = et_event_time.getText().toString().trim();
                 adress_string = et_event_adress.getText().toString().trim();
                 hostedBy_string = et_event_hoestedBy.getText().toString().trim();
-                title_string = "abc " + et_event_title.getText().toString();
+                title_string = et_event_title.getText().toString();
                 Intent intent = new Intent(EventDetailsFromUser.this , FinalizedInvitationCard.class);
                 intent.putExtra("EventTitle" , title_string ) ;
                 intent.putExtra("EventPersonName" , personName_string ) ;
