@@ -27,8 +27,8 @@ public class FragmentHire extends Fragment {
 
     private RecyclerView mServiceList ;
 
-    private DatabaseReference mDatabase ;
-    private Query mQueryService ;
+    private DatabaseReference mDatabasePhoto , mDatabaseCat ;
+    private Query mQueryPhoto , mQueryCat ;
 
     private Button btn_photo , btn_caterer ;
 
@@ -53,26 +53,22 @@ public class FragmentHire extends Fragment {
             @Override
             public void onClick(View v) {
 
-                mDatabase = FirebaseDatabase.getInstance().getReference().child("Hire");
-                mQueryService = mDatabase.orderByChild("Service").equalTo("Photographer");
+                mDatabasePhoto = FirebaseDatabase.getInstance().getReference().child("Photographer");
+                mQueryPhoto = mDatabasePhoto.orderByChild("Availability").equalTo("Available");
 
-                mDatabase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild("Availability")){
 
-                        }
-                        else {
-                            FirebaseRecyclerAdapter<Users , ServiceViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, ServiceViewHolder>(
+                FirebaseRecyclerAdapter<Users , ServiceViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, ServiceViewHolder>(
 
                                     Users.class ,
                                     R.layout.service_row ,
                                     ServiceViewHolder.class ,
-                                    mQueryService
+                                    mQueryPhoto
 
                             ) {
                                 @Override
                                 protected void populateViewHolder(ServiceViewHolder viewHolder, Users model, int position) {
+
+                                    final String key = getRef(position).getKey();
 
                                     viewHolder.setName(model.getName());
                                     viewHolder.setEmail(model.getEmail());
@@ -81,7 +77,20 @@ public class FragmentHire extends Fragment {
                                     viewHolder.btn_hire.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            Toast.makeText(getActivity() , "Hired!!!!!!!" , Toast.LENGTH_LONG).show();
+                                            final DatabaseReference mDatebaseHire = mDatabasePhoto.child(key);
+                                            mDatabasePhoto.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    mDatebaseHire.child("Availability").setValue("Not Available");
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                            Toast.makeText(getActivity() , "Photographer hired...We will contact you further details" , Toast.LENGTH_LONG).show();
                                         }
                                     });
 
@@ -92,41 +101,30 @@ public class FragmentHire extends Fragment {
 
                             txt_caterer.setVisibility(View.INVISIBLE);
                             txt_photo.setVisibility(View.VISIBLE);
-                        }
 
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
             }
         });
 
         btn_caterer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase = FirebaseDatabase.getInstance().getReference().child("Hire");
-                mQueryService = mDatabase.orderByChild("Service").equalTo("caterer");
+                mDatabaseCat = FirebaseDatabase.getInstance().getReference().child("Caterer");
+                mQueryCat = mDatabaseCat.orderByChild("Availability").equalTo("Available");
 
-                mDatabase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild("Availability")){
 
-                        }
-                        else {
                             FirebaseRecyclerAdapter<Users , ServiceViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, ServiceViewHolder>(
 
                                     Users.class ,
                                     R.layout.service_row ,
                                     ServiceViewHolder.class ,
-                                    mQueryService
+                                    mQueryCat
 
                             ) {
                                 @Override
                                 protected void populateViewHolder(ServiceViewHolder viewHolder, Users model, int position) {
+
+                                    final String key1 = getRef(position).getKey();
 
                                     viewHolder.setName(model.getName());
                                     viewHolder.setEmail(model.getEmail());
@@ -136,6 +134,20 @@ public class FragmentHire extends Fragment {
                                         @Override
                                         public void onClick(View v) {
                                             Toast.makeText(getActivity() , "Hired!!!!!!!" , Toast.LENGTH_LONG).show();
+                                            final DatabaseReference mDatebaseHire = mDatabaseCat.child(key1);
+                                            mDatabaseCat.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    mDatebaseHire.child("Availability").setValue("Not Available");
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                            Toast.makeText(getActivity() , "Caterer hired...We will contact you further details" , Toast.LENGTH_LONG).show();
                                         }
                                     });
 
@@ -146,15 +158,7 @@ public class FragmentHire extends Fragment {
 
                             txt_caterer.setVisibility(View.VISIBLE);
                             txt_photo.setVisibility(View.INVISIBLE);
-                        }
 
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
 
             }
         });

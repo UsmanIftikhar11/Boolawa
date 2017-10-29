@@ -138,7 +138,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(intent2);
                 break;
             case R.id.nav_navigate:
-                Intent intent3 = new Intent(Home.this, Navigation.class);
+                Intent intent3 = new Intent(Home.this, GetDirection.class);
                 startActivity(intent3);
                 break;
             case R.id.nav_exit:

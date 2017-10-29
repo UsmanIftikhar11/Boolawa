@@ -1,5 +1,6 @@
 package com.example.hamziii.boolawa;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -25,6 +26,8 @@ public class DirectionFinder {
     private DirectionFinderListener listener;
     private String origin;
     private String destination;
+    private Context context ;
+    private GPSTracker gps = new GPSTracker(context);
 
     public DirectionFinder(DirectionFinderListener listener, String origin, String destination) {
         this.listener = listener;

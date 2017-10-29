@@ -23,8 +23,13 @@ import com.google.firebase.database.Query;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import github.nisrulz.screenshott.ScreenShott;
 
 public class FinalizedInvitationCard extends AppCompatActivity {
 
@@ -39,7 +44,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
 
     private Button btn_saveCard1 , btn_editCard1 , btn_saveCard2 , btn_editCard2 , btn_saveCard3 , btn_editCard3;
 
-    RelativeLayout invitationLayout1 ;
+    RelativeLayout invitationLayout1 , abc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
         imgSampleNo = getIntent().getExtras().getInt("imgSampleNo");
 
         invitationLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
+        abc = (RelativeLayout)findViewById(R.id.abc);
 
         switch (imgSampleNo){
 
@@ -97,7 +103,11 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 btn_saveCard1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        invitationLayout1.post(new Runnable() {
+
+                        Bitmap bitmap_hiddenview = ScreenShott.getInstance().takeScreenShotOfRootView(invitationLayout1);
+
+                        //startSave();
+                        /*invitationLayout1.post(new Runnable() {
                             @Override
                             public void run() {
                                 Bitmap image = takeImage(invitationLayout1) ;
@@ -113,7 +123,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                                 }
 
                             }
-                        });
+                        });*/
 
                         /*RelativeLayout invitationLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
                         Bitmap bitmap = Bitmap.createBitmap(invitationLayout1.getWidth(), invitationLayout1.getHeight(), Bitmap.Config.ARGB_8888);
@@ -250,7 +260,63 @@ public class FinalizedInvitationCard extends AppCompatActivity {
 
     }
 
-    private Bitmap takeImage (View v){
+    public static Bitmap viewToBitmap(View view , int width , int height){
+
+        Bitmap bitmap = Bitmap.createBitmap(width , height , Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap ;
+    }
+
+    public void startSave(){
+
+        FileOutputStream fileOutputStream = null ;
+        File file = getDisc();
+        if(!file.exists() && !file.mkdirs()){
+            Toast.makeText(this , "Error" , Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmsshhmmss");
+        String date = simpleDateFormat.format(new Date());
+        String name = "Img" + date + ".jpg";
+        String fileName = file.getAbsolutePath() + "/" + name ;
+
+        File new_file = new File(fileName);
+
+        try{
+
+            fileOutputStream = new FileOutputStream(new_file);
+            Bitmap bitmap = viewToBitmap(abc , abc.getMeasuredWidth() , abc.getMeasuredHeight());
+            bitmap.compress(Bitmap.CompressFormat.JPEG , 100 , fileOutputStream);
+            Toast.makeText(this , "Saved" , Toast.LENGTH_LONG).show();
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        refreshGalery(new_file);
+    }
+
+    public void refreshGalery(File file){
+
+        Intent intent = new Intent(Intent.ACTION_MEDIA_MOUNTED);
+        intent.setData(Uri.fromFile(file));
+        sendBroadcast(intent);
+
+        //getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+    Environment.getExternalStorageDirectory())));
+    }
+
+    private File getDisc(){
+
+        File file = Environment.getRootDirectory();
+        return new File(file , "image demo");
+    }
+
+    /*private Bitmap takeImage (View v){
 
         Bitmap takeimage = null;
 
@@ -267,9 +333,9 @@ public class FinalizedInvitationCard extends AppCompatActivity {
             e.printStackTrace();
         }
         return takeimage ;
-    }
+    }*/
 
-    private void saveImage (Bitmap bm){
+    /*private void saveImage (Bitmap bm){
 
         ByteArrayOutputStream bao = null ;
         File file = null ;
@@ -289,8 +355,8 @@ public class FinalizedInvitationCard extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /*Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.fromFile(file));
-        sendBroadcast(intent);*/
-    }
+        sendBroadcast(intent);
+    }*/
 }

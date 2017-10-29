@@ -2,6 +2,7 @@ package com.example.hamziii.boolawa;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.v4.app.ActivityCompat;
@@ -31,6 +32,7 @@ import java.util.List;
 import com.example.hamziii.boolawa.DirectionFinder;
 import com.example.hamziii.boolawa.DirectionFinderListener;
 import com.example.hamziii.boolawa.Route;
+import com.example.hamziii.boolawa.GPSTracker;
 
 public class Navigation extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener {
 
@@ -42,6 +44,8 @@ public class Navigation extends FragmentActivity implements OnMapReadyCallback, 
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
+    private Context context ;
+    private GPSTracker gps = new GPSTracker(context);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class Navigation extends FragmentActivity implements OnMapReadyCallback, 
     private void sendRequest() {
         String origin = etOrigin.getText().toString();
         String destination = etDestination.getText().toString();
+        //origin = gps.getLocation();
         if (origin.isEmpty()) {
             Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
             return;
@@ -77,7 +82,7 @@ public class Navigation extends FragmentActivity implements OnMapReadyCallback, 
         }
 
         try {
-            new DirectionFinder(this, origin, destination).execute();
+            new DirectionFinder(this, origin , destination).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -86,10 +91,10 @@ public class Navigation extends FragmentActivity implements OnMapReadyCallback, 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng hcmus = new LatLng(10.762963, 106.682394);
+        LatLng hcmus = new LatLng(-.34 , 161);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hcmus, 18));
         originMarkers.add(mMap.addMarker(new MarkerOptions()
-                .title("Đại học Khoa học tự nhiên")
+                .title("Your location")
                 .position(hcmus)));
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

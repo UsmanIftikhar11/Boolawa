@@ -53,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
+
         mEmailField = (EditText)findViewById(R.id.editText_login_email);
         mpasswordField = (EditText)findViewById(R.id.editText_login_password);
         mloginBtn = (Button)findViewById(R.id.login_button111);
@@ -69,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         mGoogleBtn = (SignInButton)findViewById(R.id.gogleBtn);
-        mAuth = FirebaseAuth.getInstance();
+
         mDatabaseusers = FirebaseDatabase.getInstance().getReference().child("Users");
         /*mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -87,16 +89,15 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener()
-                {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
-                    {
-                        Toast.makeText(LoginActivity.this,"You Got An Error",Toast.LENGTH_SHORT).show();
-                    }
-                })
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+            @Override
+            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+
+            }
+        })
+                .addApi(Auth.GOOGLE_SIGN_IN_API , gso)
                 .build();
 
         mGoogleBtn.setOnClickListener(new View.OnClickListener()
