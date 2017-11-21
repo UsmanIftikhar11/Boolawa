@@ -1,17 +1,26 @@
 package com.example.hamziii.boolawa;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.view.accessibility.AccessibilityManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import github.nisrulz.screenshott.ScreenShott;
+import java.util.Random;
 
 public class FinalizedInvitationCard extends AppCompatActivity {
 
@@ -46,13 +54,12 @@ public class FinalizedInvitationCard extends AppCompatActivity {
 
     RelativeLayout invitationLayout1 , abc;
 
+    private View main ;
+    private ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_finalized_invitation_card);
-
-        //txt_check = (TextView)findViewById(R.id.txt_check);
-
 
         eventTitle = getIntent().getExtras().getString("EventTitle") ;
         eventPersonName = getIntent().getExtras().getString("EventPersonName") ;
@@ -62,38 +69,20 @@ public class FinalizedInvitationCard extends AppCompatActivity {
         eventHostedBy = getIntent().getExtras().getString("EventHostedBy") ;
         imgSampleNo = getIntent().getExtras().getInt("imgSampleNo");
 
-        invitationLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
         abc = (RelativeLayout)findViewById(R.id.abc);
+        invitationLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
 
         switch (imgSampleNo){
-
             case 1 :
                 setContentView(R.layout.invitationcard1);
-
-                /*eventTitle = getIntent().getExtras().getString("EventTitle").toString() ;
-                eventPersonName = getIntent().getExtras().getString("EventPersonName").toString() ;
-                eventDate = getIntent().getExtras().getString("EventDate").toString() ;
-                eventTime = getIntent().getExtras().getString("EventTime").toString() ;
-                eventAdress = getIntent().getExtras().getString("EventAdress").toString() ;
-                eventHostedBy = getIntent().getExtras().getString("EventHostedBy").toString() ;
-                imgSampleNo = getIntent().getExtras().getInt("imgSampleNo");*/
-                break;
-            case 2 :
-                setContentView(R.layout.invitationcard2);
-                break;
-            case 3 :
-                setContentView(R.layout.invitationcard3);
-                break;
-        }
-
-        switch (imgSampleNo){
-            case 1 :
-                txt_eventTitle1 = (TextView)findViewById(R.id.txt_event_title1) ;
+                txt_eventTitle1 = (TextView)findViewById(R.id. txt_event_title1) ;
                 txt_eventDate1 = (TextView)findViewById(R.id.txt_event_date1) ;
                 txt_eventTime1 = (TextView)findViewById(R.id.txt_event_time1) ;
                 txt_eventAdress1 = (TextView)findViewById(R.id.txt_event_adress1) ;
                 btn_saveCard1 = (Button)findViewById(R.id.btn_saveCard1);
                 btn_editCard1 = (Button)findViewById(R.id.btn_editCard1);
+
+                imageView = (ImageView)findViewById(R.id.imageView);
 
                 txt_eventTitle1.setText(eventTitle);
                 txt_eventDate1.setText(eventDate);
@@ -104,62 +93,45 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        Bitmap bitmap_hiddenview = ScreenShott.getInstance().takeScreenShotOfRootView(invitationLayout1);
-
-                        //startSave();
-                        /*invitationLayout1.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Bitmap image = takeImage(invitationLayout1) ;
-
-                                try {
-                                    if(image != null){
-                                        saveImage(image);
-                                        Toast.makeText(getApplicationContext() , "Saved" , Toast.LENGTH_LONG).show();
-                                    }
-
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        });*/
-
-                        /*RelativeLayout invitationLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
-                        Bitmap bitmap = Bitmap.createBitmap(invitationLayout1.getWidth(), invitationLayout1.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas c = new Canvas(bitmap);
-                        invitationLayout1.draw(c);
-                        String a="/root/sdcard/Pictures/img0001.jpg";
-                        File outputFile = new File(a); // Where to save it
-                        //FileOutputStream out = new FileOutputStream(imageFile);
-                        boolean success = bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        View view = findViewById(R.id.layout_invitation1) ;
+                        view.setDrawingCacheEnabled(true);
+                        view.buildDrawingCache(true);
+                        Bitmap b = Bitmap.createBitmap(view.getDrawingCache());
+                        view.setDrawingCacheEnabled(false);
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(System.currentTimeMillis());
+                        String imgName = timeStamp + ".jpg";
+                        //imageView.setImageBitmap(b);
+                        //saveMyImage(b);
+                        File filename = null;
                         try {
+                            String path1 = android.os.Environment.getExternalStorageDirectory()
+                                    .toString();
+                            Log.i("in save()", "after mkdir");
+                            File file = new File(path1 + "/" + "Boolawa");
+                            if (!file.exists())
+                                file.mkdirs();
+                            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
+                            Log.i("in save()", "after file");
+                            FileOutputStream out = new FileOutputStream(filename);
+                            Log.i("in save()", "after outputstream");
+                            b.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                            out.flush();
                             out.close();
-                        } catch (IOException e) {
+                            Log.i("in save()", "after outputstream closed");
+                            //File parent = filename.getParentFile();
+                            ContentValues image = getImageContent(filename);
+                            Uri result = getContentResolver().insert(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);
+                            Toast.makeText(getApplicationContext(),
+                                    "File is Saved in  " + filename, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        try{
-                            RelativeLayout invitationLayout1 = (RelativeLayout)findViewById(R.id.abc);
-                            Bitmap bitmap = Bitmap.createBitmap(invitationLayout1.getMeasuredWidth(), invitationLayout1.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-                            Canvas c = new Canvas(bitmap);
-                            invitationLayout1.draw(c);
 
-                            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG , 100 , bao);
-
-                            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "invitation.png");
-                            file.createNewFile();
-
-                            FileOutputStream fos = new FileOutputStream(file);
-                            fos.write(bao.toByteArray());
-                            fos.close();
-                            fos.flush();
-
-                            Toast.makeText(getApplicationContext() , "Card Saved..." , Toast.LENGTH_LONG).show();
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }*/
+                        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        File f = new File(String.valueOf(filename));
+                        Uri contentUri = Uri.fromFile(f);
+                        mediaScanIntent.setData(contentUri);
 
 
                     }
@@ -176,6 +148,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 });
                 break;
             case 2:
+                setContentView(R.layout.invitationcard2);
                 txt_eventTitle2 = (TextView)findViewById(R.id.txt_event_title2) ;
                 txt_eventDate2 = (TextView)findViewById(R.id.txt_event_date2) ;
                 txt_eventTime2 = (TextView)findViewById(R.id.txt_eventtime2) ;
@@ -193,22 +166,6 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 btn_saveCard2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RelativeLayout shareLayout1 = (RelativeLayout)findViewById(R.id.layout_invitation1);
-                        //shareLayout1.setDrawingCacheEnabled(false);
-                        shareLayout1.buildDrawingCache();
-                        Bitmap bm1 = shareLayout1.getDrawingCache();
-                        try {
-                            FileOutputStream fileOutputStream = new FileOutputStream(String.valueOf(bm1));
-                            bm1.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                            fileOutputStream.flush();
-                            fileOutputStream.close();
-                        } catch (Exception e) {
-                            // TODO: handle exception
-                        } finally {
-                            shareLayout1.destroyDrawingCache();
-                        }
-                        //ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
-                        //bm1.compress(Bitmap.CompressFormat.JPEG, 100, bytes1);
                     }
                 });
                 btn_editCard2.setOnClickListener(new View.OnClickListener() {
@@ -221,6 +178,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 });
                 break;
             case 3 :
+                setContentView(R.layout.invitationcard3);
                 txt_eventTitle3 = (TextView)findViewById(R.id.txt_event_title3) ;
                 txt_eventDateTime3 = (TextView)findViewById(R.id.txt_event_dateTime) ;
                 txt_eventAdress3 = (TextView)findViewById(R.id.txt_event_adress3) ;
@@ -260,103 +218,105 @@ public class FinalizedInvitationCard extends AppCompatActivity {
 
     }
 
-    public static Bitmap viewToBitmap(View view , int width , int height){
-
-        Bitmap bitmap = Bitmap.createBitmap(width , height , Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-        return bitmap ;
-    }
-
-    public void startSave(){
-
-        FileOutputStream fileOutputStream = null ;
-        File file = getDisc();
-        if(!file.exists() && !file.mkdirs()){
-            Toast.makeText(this , "Error" , Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyymmsshhmmss");
-        String date = simpleDateFormat.format(new Date());
-        String name = "Img" + date + ".jpg";
-        String fileName = file.getAbsolutePath() + "/" + name ;
-
-        File new_file = new File(fileName);
-
-        try{
-
-            fileOutputStream = new FileOutputStream(new_file);
-            Bitmap bitmap = viewToBitmap(abc , abc.getMeasuredWidth() , abc.getMeasuredHeight());
-            bitmap.compress(Bitmap.CompressFormat.JPEG , 100 , fileOutputStream);
-            Toast.makeText(this , "Saved" , Toast.LENGTH_LONG).show();
-            fileOutputStream.flush();
-            fileOutputStream.close();
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-        refreshGalery(new_file);
-    }
-
-    public void refreshGalery(File file){
-
-        Intent intent = new Intent(Intent.ACTION_MEDIA_MOUNTED);
-        intent.setData(Uri.fromFile(file));
-        sendBroadcast(intent);
-
-        //getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+    Environment.getExternalStorageDirectory())));
-    }
-
-    private File getDisc(){
-
-        File file = Environment.getRootDirectory();
-        return new File(file , "image demo");
-    }
-
-    /*private Bitmap takeImage (View v){
-
-        Bitmap takeimage = null;
-
+    /*private void saveImageToExternalStorage(Bitmap finalBitmap) {
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        File myDir = new File(root + "/saved_images_1");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-" + n + ".jpg";
+        File file = new File(myDir, fname);
+        if (file.exists())
+            file.delete();
         try {
-            int width = v.getMeasuredWidth() ;
-            int height = v.getMeasuredHeight() ;
-
-            takeimage = Bitmap.createBitmap(width , height , Bitmap.Config.ARGB_8888);
-
-            Canvas c = new Canvas(takeimage);
-            v.draw(c);
-
-        }catch (Exception e){
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
-        return takeimage ;
+
+
+        // Tell the media scanner about the new file so that it is
+        // immediately available to the user.
+        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+
     }*/
 
-    /*private void saveImage (Bitmap bm){
 
-        ByteArrayOutputStream bao = null ;
-        File file = null ;
 
+    /*private static void SaveImage(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File myDir = new File(root + "/saved_images");
+        myDir.mkdirs();
+
+        String fname = "Image-" +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
         try {
-            bao = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.PNG , 40 , bao);
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
 
-            file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + "card.png");
-            file.createNewFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
 
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(bao.toByteArray());
-            fos.close();
-
-        }catch (Exception e){
+    private void saveMyImage( Bitmap bmImg ) {
+        File filename;
+        try {
+            String path1 = android.os.Environment.getExternalStorageDirectory()
+                    .toString();
+            Log.i("in save()", "after mkdir");
+            File file = new File(path1 + "/" + "Boolawa");
+            if (!file.exists())
+                file.mkdirs();
+            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
+            Log.i("in save()", "after file");
+            FileOutputStream out = new FileOutputStream(filename);
+            Log.i("in save()", "after outputstream");
+            bmImg.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            Log.i("in save()", "after outputstream closed");
+            //File parent = filename.getParentFile();
+            ContentValues image = getImageContent(filename);
+            Uri result = getContentResolver().insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);
+            Toast.makeText(getApplicationContext(),
+                    "File is Saved in  " + filename, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        intent.setData(Uri.fromFile(file));
-        sendBroadcast(intent);
-    }*/
+    }
+
+    public ContentValues getImageContent(File parent) {
+        ContentValues image = new ContentValues();
+        image.put(MediaStore.Images.Media.TITLE, "Boolawa");
+        image.put(MediaStore.Images.Media.DISPLAY_NAME, "img1");
+        image.put(MediaStore.Images.Media.DESCRIPTION, "App Image");
+        image.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        image.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+        image.put(MediaStore.Images.Media.ORIENTATION, 0);
+        image.put(MediaStore.Images.ImageColumns.BUCKET_ID, parent.toString()
+                .toLowerCase().hashCode());
+        image.put(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, parent.getName()
+                .toLowerCase());
+        image.put(MediaStore.Images.Media.SIZE, parent.length());
+        image.put(MediaStore.Images.Media.DATA, parent.getAbsolutePath());
+        return image;
+    }
 }

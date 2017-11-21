@@ -27,7 +27,7 @@ public class FragmentHire extends Fragment {
 
     private RecyclerView mServiceList ;
 
-    private DatabaseReference mDatabasePhoto , mDatabaseCat ;
+    private DatabaseReference mDatabase , mDatabasePhoto , mDatabaseCat ;
     private Query mQueryPhoto , mQueryCat ;
 
     private Button btn_photo , btn_caterer ;
@@ -53,7 +53,8 @@ public class FragmentHire extends Fragment {
             @Override
             public void onClick(View v) {
 
-                mDatabasePhoto = FirebaseDatabase.getInstance().getReference().child("Photographer");
+                mDatabase = FirebaseDatabase.getInstance().getReference().child("Hire");
+                mDatabasePhoto = mDatabase.child("Photographer");
                 mQueryPhoto = mDatabasePhoto.orderByChild("Availability").equalTo("Available");
 
 
@@ -71,8 +72,8 @@ public class FragmentHire extends Fragment {
                                     final String key = getRef(position).getKey();
 
                                     viewHolder.setName(model.getName());
-                                    viewHolder.setEmail(model.getEmail());
-                                    viewHolder.setPrice(model.getPrice());
+                                    viewHolder.setPhone(model.getPhone());
+                                    viewHolder.setCharges(model.getCharges());
 
                                     viewHolder.btn_hire.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -109,7 +110,9 @@ public class FragmentHire extends Fragment {
         btn_caterer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabaseCat = FirebaseDatabase.getInstance().getReference().child("Caterer");
+
+                mDatabase = FirebaseDatabase.getInstance().getReference().child("Hire");
+                mDatabaseCat = mDatabase.child("Caterer");
                 mQueryCat = mDatabaseCat.orderByChild("Availability").equalTo("Available");
 
 
@@ -127,8 +130,8 @@ public class FragmentHire extends Fragment {
                                     final String key1 = getRef(position).getKey();
 
                                     viewHolder.setName(model.getName());
-                                    viewHolder.setEmail(model.getEmail());
-                                    viewHolder.setPrice(model.getPrice());
+                                    viewHolder.setPhone(model.getPhone());
+                                    viewHolder.setCharges(model.getCharges());
 
                                     viewHolder.btn_hire.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -182,13 +185,13 @@ public class FragmentHire extends Fragment {
             TextView txt_Name = (TextView) mView.findViewById(R.id.txt_serviceProviderName);
             txt_Name.setText(name);
         }
-        public void setEmail (String email){
+        public void setPhone (String phone){
             TextView txt_Email = (TextView) mView.findViewById(R.id.txt_serviceProviderEmail);
-            txt_Email.setText(email);
+            txt_Email.setText(phone);
         }
-        public void setPrice (String price){
+        public void setCharges (String charges){
             TextView txt_Price = (TextView) mView.findViewById(R.id.txt_serviceProviderPrice);
-            txt_Price.setText(price);
+            txt_Price.setText(charges);
         }
     }
 }

@@ -3,7 +3,11 @@ package com.example.hamziii.boolawa;
 import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,6 +24,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.directions.route.*;
+import com.directions.route.Route;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -27,7 +33,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -36,6 +44,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,9 +52,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class GetDirection extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+import static com.example.hamziii.boolawa.R.id.map;
+
+public class GetDirection extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener , RoutingListener {
 
     private GoogleMap mMap;
 
@@ -67,6 +79,9 @@ public class GetDirection extends FragmentActivity implements OnMapReadyCallback
     private EditText et_searchDest ;
     private Button btn_searchDest ;
 
+    private List<Polyline> polylines;
+    private static final int[] COLORS = new int[]{R.color.colorPrimaryDark,R.color.colorPrimary,R.color.gbtn,R.color.colorAccent,R.color.primary_dark_material_light};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +94,11 @@ public class GetDirection extends FragmentActivity implements OnMapReadyCallback
 
             checkLocationPermission();
         }
+
+        polylines = new ArrayList<>();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(map);
         mapFragment.getMapAsync(this);
 
         btn_searchDest.setOnClickListener(new View.OnClickListener() {
@@ -117,8 +134,32 @@ public class GetDirection extends FragmentActivity implements OnMapReadyCallback
                         mMap.animateCamera(CameraUpdateFactory.newLatLng(destLatLng));
                     }
                 }
+
+                /*LatLng start = new LatLng(18.015365, -77.499382);
+                LatLng end1 = new LatLng(18.012590, -77.500659);
+
+                Routing routing = new Routing.Builder()
+                        .travelMode(AbstractRouting.TravelMode.DRIVING)
+                        //.withListener(this)
+                        .waypoints(start, end1)
+                        .build();
+                routing.execute();*/
+
+                getRouteToMarker(destLatLng);
+
             }
         });
+    }
+
+    private void getRouteToMarker(LatLng destLatLng) {
+
+        Routing routing = new Routing.Builder()
+                .travelMode(AbstractRouting.TravelMode.DRIVING)
+                .withListener(this)
+                .alternativeRoutes(true)
+                .waypoints(currentLatLng, destLatLng)
+                .build();
+        routing.execute();
     }
 
     @Override
@@ -268,4 +309,103 @@ public class GetDirection extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public String[] parseDirections(String jsonData){
+
+        JSONArray jsonArray = null ;
+        JSONObject jsonObject ;
+
+        try {
+            jsonObject = new JSONObject(jsonData) ;
+            jsonArray = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONArray("steps");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return getPaths(jsonArray);
+    }
+
+    public String[] getPaths(JSONArray googleStepJson){
+
+        int count = googleStepJson.length();
+        String[] polylines = new String[count];
+
+        for(int i=0 ; i<count ; i++){
+
+            try {
+                polylines[i] = getPath(googleStepJson.getJSONObject(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return polylines ;
+    }
+
+    public String getPath(JSONObject googlePathJson){
+
+        String polyline = null;
+        try {
+        polyline = googlePathJson.getJSONObject("polyline").getString("points");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return polyline ;
+    }
+
+    @Override
+    public void onRoutingFailure(RouteException e) {
+
+        if(e != null) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, "Something went wrong, Try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRoutingStart() {
+
+    }
+
+    @Override
+    public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
+
+        if(polylines.size()>0) {
+            for (Polyline poly : polylines) {
+                poly.remove();
+            }
+        }
+
+        polylines = new ArrayList<>();
+        //add route(s) to the map.
+        for (int i = 0; i <route.size(); i++) {
+
+            //In case of more than 5 alternative routes
+            int colorIndex = i % COLORS.length;
+
+            PolylineOptions polyOptions = new PolylineOptions();
+            polyOptions.color(getResources().getColor(COLORS[colorIndex]));
+            polyOptions.width(10 + i * 3);
+            polyOptions.addAll(route.get(i).getPoints());
+            Polyline polyline = mMap.addPolyline(polyOptions);
+            polylines.add(polyline);
+
+            Toast.makeText(getApplicationContext(),"Route "+ (i+1) +": distance - "+ route.get(i).getDistanceValue()+": duration - "+ route.get(i).getDurationValue(),Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onRoutingCancelled() {
+
+    }
+
+    private void erasePolylines(){
+
+        for(Polyline line : polylines){
+
+            line.remove();
+        }
+        polylines.clear();
+    }
 }

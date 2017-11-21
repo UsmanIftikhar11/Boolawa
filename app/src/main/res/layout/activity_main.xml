@@ -12,7 +12,7 @@
 
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -35,6 +35,7 @@
             android:text="Login"
             android:onClick="goToLoginActivity"
             android:layout_gravity="bottom"
+            android:layout_below="@+id/textView2"
             />
 
         <Button
@@ -43,8 +44,16 @@
             android:text="SignUp"
             android:onClick="goToSignUpActivity"
             android:layout_gravity="bottom"
-            />
+            android:layout_below="@+id/login_button"/>
 
-    </LinearLayout>
+        <Button
+            style="@style/button_style"
+            android:id="@+id/serviceProvider_button"
+            android:text="Servive Provider"
+            android:onClick="goToServiceProviderActivity"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

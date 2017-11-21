@@ -46,7 +46,8 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-database:1.1.1'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.google.android.gms:play-services-location:10.0.1'
-    compile 'com.github.nisrulz:screenshott:2.0.0'
+    compile 'com.github.jd-alexander:library:1.1.0'
+    compile 'com.jaredrummler:material-spinner:1.1.0'
     testCompile 'junit:junit:4.12'
 }
 

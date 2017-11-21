@@ -124,10 +124,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     {
         switch (id)
         {
-            case R.id.nav_account:
-                Intent intent = new Intent(Home.this, Account.class);
+
+            case R.id.nav_allUsers:
+                Intent intent = new Intent(Home.this, AllUsers.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                break;
+            case R.id.nav_account:
+                Intent intent4 = new Intent(Home.this, Account.class);
+                intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent4);
                 break;
             case R.id.nav_contact:
                 Intent intent1 = new Intent(Home.this, ContactUs.class);
@@ -222,7 +228,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 case 3:
                     return "Hire";
                 case 4:
-                    return "Navigate";
+                    return "Memories";
             }
             return null;
         }

@@ -116,7 +116,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             String user_id = firebaseAuth.getCurrentUser().getUid();
                             DatabaseReference current_user_db = databaseUser.child(user_id);
-                            current_user_db.child("name").setValue(name1);
+                            current_user_db.child("UserName").setValue(name1);
 
                             progressDialog.dismiss();
                             Toast.makeText(SignUpActivity.this, "Registration Successfull", Toast.LENGTH_SHORT).show();

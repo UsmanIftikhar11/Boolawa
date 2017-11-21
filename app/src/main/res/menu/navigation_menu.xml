@@ -4,6 +4,11 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/nav_allUsers"
+            android:title="All Users"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
             android:id="@+id/nav_account"
             android:title="My Account"
             android:icon="@drawable/ic_menu_gallery"/>
