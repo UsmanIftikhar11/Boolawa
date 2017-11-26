@@ -10,13 +10,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Users
 {
-    private String Image , Name , Email , Price , Service , UserName , phone , charges , Caption , EventImage , UploaderId ;
+    private String Image , Name , Email , Price , Service , UserName , phone , charges , Caption , EventImage , UploaderId , friendName , Sent_By , InvitationCard , CreatedBy  , HiredBy;
 
     public Users(){
 
     }
 
-    public Users(String image, String name, String email, String price, String service, String userName, String phone, String charges, String caption, String eventImage, String uploaderId) {
+    public Users(String image, String name, String email, String price, String service, String userName, String phone, String charges, String caption, String eventImage, String uploaderId, String friendName, String sent_By, String invitationCard, String createdBy, String hiredBy) {
         Image = image;
         Name = name;
         Email = email;
@@ -28,6 +28,11 @@ public class Users
         Caption = caption;
         EventImage = eventImage;
         UploaderId = uploaderId;
+        this.friendName = friendName;
+        Sent_By = sent_By;
+        InvitationCard = invitationCard;
+        CreatedBy = createdBy;
+        HiredBy = hiredBy;
     }
 
     public String getImage() {
@@ -116,5 +121,45 @@ public class Users
 
     public void setUploaderId(String uploaderId) {
         UploaderId = uploaderId;
+    }
+
+    public String getFriendName() {
+        return friendName;
+    }
+
+    public void setFriendName(String friendName) {
+        this.friendName = friendName;
+    }
+
+    public String getSent_By() {
+        return Sent_By;
+    }
+
+    public void setSent_By(String sent_By) {
+        Sent_By = sent_By;
+    }
+
+    public String getInvitationCard() {
+        return InvitationCard;
+    }
+
+    public void setInvitationCard(String invitationCard) {
+        InvitationCard = invitationCard;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
+    }
+
+    public String getHiredBy() {
+        return HiredBy;
+    }
+
+    public void setHiredBy(String hiredBy) {
+        HiredBy = hiredBy;
     }
 }

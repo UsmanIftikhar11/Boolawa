@@ -140,7 +140,7 @@ public class ServiceProviderLogin extends AppCompatActivity {
 
                     if(dataSnapshot.hasChild(user_id)){
 
-                        Intent mainIntent = new Intent(ServiceProviderLogin.this , ServiceProviderHome.class);
+                        Intent mainIntent = new Intent(ServiceProviderLogin.this , ServceProviderShowHire.class);
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(mainIntent);
 

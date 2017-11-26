@@ -35,4 +35,15 @@
         android:background="@drawable/savebtn_style"
         android:padding="10dp"/>
 
+    <Button
+        android:id="@+id/btn_inApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_sendWhatsapp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="send Invitation to Friends"
+        android:background="@drawable/savebtn_style"
+        android:padding="10dp"/>
+
 </RelativeLayout>

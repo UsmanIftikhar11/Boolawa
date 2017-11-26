@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +29,8 @@ public class FragmentHire extends Fragment {
     private RecyclerView mServiceList ;
 
     private DatabaseReference mDatabase , mDatabasePhoto , mDatabaseCat ;
+
+    private FirebaseAuth mAuth ;
     private Query mQueryPhoto , mQueryCat ;
 
     private Button btn_photo , btn_caterer ;
@@ -38,6 +41,8 @@ public class FragmentHire extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_hire, container, false);
+
+        mAuth = FirebaseAuth.getInstance() ;
 
         btn_caterer = (Button) rootView.findViewById(R.id.btn_caterer);
         btn_photo = (Button) rootView.findViewById(R.id.btn_photographer);
@@ -83,6 +88,7 @@ public class FragmentHire extends Fragment {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     mDatebaseHire.child("Availability").setValue("Not Available");
+                                                    mDatebaseHire.child("HiredBy").setValue(mAuth.getCurrentUser().getUid());
                                                 }
 
                                                 @Override
@@ -142,6 +148,7 @@ public class FragmentHire extends Fragment {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     mDatebaseHire.child("Availability").setValue("Not Available");
+                                                    mDatebaseHire.child("HiredBy").setValue(mAuth.getCurrentUser().getUid());
                                                 }
 
                                                 @Override

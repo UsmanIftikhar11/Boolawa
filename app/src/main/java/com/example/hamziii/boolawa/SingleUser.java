@@ -32,7 +32,7 @@ public class SingleUser extends AppCompatActivity {
     private String currentDate ;
 
     private DatabaseReference mFriendReqDatabase ;
-    private DatabaseReference mFriendDatabase ;
+    private DatabaseReference mFriendDatabase , mDatabaseCurrentUserName ;
     private FirebaseUser mCurrentUser ;
 
     @Override
@@ -42,7 +42,10 @@ public class SingleUser extends AppCompatActivity {
 
         mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
+
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        mDatabaseCurrentUserName = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid()).child("UserName");
 
         userName = getIntent().getExtras().getString("userName");
         userId = getIntent().getExtras().getString("user_id");
@@ -160,6 +163,7 @@ public class SingleUser extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
 
 
+                                        mFriendReqDatabase.child(userId).child(mCurrentUser.getUid()).child("Sent_By").setValue(userName);
                                         mCurrent_State = "req_sent" ;
                                         btn_sendReq.setText("Cancel Request");
 
@@ -209,13 +213,29 @@ public class SingleUser extends AppCompatActivity {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                         currentDate = DateFormat.getDateTimeInstance().format(new Date());
                     }
-                    mFriendDatabase.child(mCurrentUser.getUid()).child(userId).setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    mFriendDatabase.child(mCurrentUser.getUid()).child(userId).child("friendsSince").setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
 
-                            mFriendDatabase.child(userId).child(mCurrentUser.getUid()).setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            mFriendDatabase.child(mCurrentUser.getUid()).child(userId).child("friendName").setValue(userName);
+
+                            mFriendDatabase.child(userId).child(mCurrentUser.getUid()).child("friendsSince").setValue(currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+
+                                    //mFriendDatabase.child(userId).child(mCurrentUser.getUid()).child("friendsName").setValue(mDatabaseCurrentUserName.child("UserName"));
+
+                                    mDatabaseCurrentUserName.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            mFriendDatabase.child(userId).child(mCurrentUser.getUid()).child("friendName").setValue(dataSnapshot.getValue());
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
 
                                     mFriendReqDatabase.child(mCurrentUser.getUid()).child(userId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override

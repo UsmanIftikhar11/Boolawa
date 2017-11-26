@@ -9,6 +9,21 @@
             android:icon="@drawable/ic_menu_gallery"/>
 
         <item
+            android:id="@+id/nav_friends"
+            android:title="Friends"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
+            android:id="@+id/nav_userEvents"
+            android:title="Your Events"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
+            android:id="@+id/nav_userEventsStatus"
+            android:title="Invitation Status"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
             android:id="@+id/nav_account"
             android:title="My Account"
             android:icon="@drawable/ic_menu_gallery"/>

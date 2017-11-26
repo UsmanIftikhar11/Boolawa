@@ -166,6 +166,46 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 btn_saveCard2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        View view = findViewById(R.id.layout_invitation2) ;
+                        view.setDrawingCacheEnabled(true);
+                        view.buildDrawingCache(true);
+                        Bitmap b = Bitmap.createBitmap(view.getDrawingCache());
+                        view.setDrawingCacheEnabled(false);
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(System.currentTimeMillis());
+                        String imgName = timeStamp + ".jpg";
+                        //imageView.setImageBitmap(b);
+                        //saveMyImage(b);
+                        File filename = null;
+                        try {
+                            String path1 = android.os.Environment.getExternalStorageDirectory()
+                                    .toString();
+                            Log.i("in save()", "after mkdir");
+                            File file = new File(path1 + "/" + "Boolawa");
+                            if (!file.exists())
+                                file.mkdirs();
+                            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
+                            Log.i("in save()", "after file");
+                            FileOutputStream out = new FileOutputStream(filename);
+                            Log.i("in save()", "after outputstream");
+                            b.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                            out.flush();
+                            out.close();
+                            Log.i("in save()", "after outputstream closed");
+                            //File parent = filename.getParentFile();
+                            ContentValues image = getImageContent(filename);
+                            Uri result = getContentResolver().insert(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);
+                            Toast.makeText(getApplicationContext(),
+                                    "File is Saved in  " + filename, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        File f = new File(String.valueOf(filename));
+                        Uri contentUri = Uri.fromFile(f);
+                        mediaScanIntent.setData(contentUri);
                     }
                 });
                 btn_editCard2.setOnClickListener(new View.OnClickListener() {
@@ -196,12 +236,45 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 btn_saveCard3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RelativeLayout shareLayout2 = (RelativeLayout)findViewById(R.id.layout_invitation1);
-                        shareLayout2.setDrawingCacheEnabled(true);
-                        shareLayout2.buildDrawingCache();
-                        Bitmap bm2 = shareLayout2.getDrawingCache();
-                        ByteArrayOutputStream bytes2 = new ByteArrayOutputStream();
-                        bm2.compress(Bitmap.CompressFormat.JPEG, 100, bytes2);
+                        View view = findViewById(R.id.layout_invitation3) ;
+                        view.setDrawingCacheEnabled(true);
+                        view.buildDrawingCache(true);
+                        Bitmap b = Bitmap.createBitmap(view.getDrawingCache());
+                        view.setDrawingCacheEnabled(false);
+                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(System.currentTimeMillis());
+                        String imgName = timeStamp + ".jpg";
+                        //imageView.setImageBitmap(b);
+                        //saveMyImage(b);
+                        File filename = null;
+                        try {
+                            String path1 = android.os.Environment.getExternalStorageDirectory()
+                                    .toString();
+                            Log.i("in save()", "after mkdir");
+                            File file = new File(path1 + "/" + "Boolawa");
+                            if (!file.exists())
+                                file.mkdirs();
+                            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
+                            Log.i("in save()", "after file");
+                            FileOutputStream out = new FileOutputStream(filename);
+                            Log.i("in save()", "after outputstream");
+                            b.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                            out.flush();
+                            out.close();
+                            Log.i("in save()", "after outputstream closed");
+                            //File parent = filename.getParentFile();
+                            ContentValues image = getImageContent(filename);
+                            Uri result = getContentResolver().insert(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);
+                            Toast.makeText(getApplicationContext(),
+                                    "File is Saved in  " + filename, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        File f = new File(String.valueOf(filename));
+                        Uri contentUri = Uri.fromFile(f);
+                        mediaScanIntent.setData(contentUri);
                     }
                 });
 
@@ -215,92 +288,6 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                 });
                 break;
         }
-
-    }
-
-    /*private void saveImageToExternalStorage(Bitmap finalBitmap) {
-        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-        File myDir = new File(root + "/saved_images_1");
-        myDir.mkdirs();
-        Random generator = new Random();
-        int n = 10000;
-        n = generator.nextInt(n);
-        String fname = "Image-" + n + ".jpg";
-        File file = new File(myDir, fname);
-        if (file.exists())
-            file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        // Tell the media scanner about the new file so that it is
-        // immediately available to the user.
-        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    public void onScanCompleted(String path, Uri uri) {
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> uri=" + uri);
-                    }
-                });
-
-    }*/
-
-
-
-    /*private static void SaveImage(Bitmap finalBitmap) {
-
-        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File myDir = new File(root + "/saved_images");
-        myDir.mkdirs();
-
-        String fname = "Image-" +".jpg";
-        File file = new File (myDir, fname);
-        if (file.exists ()) file.delete ();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    private void saveMyImage( Bitmap bmImg ) {
-        File filename;
-        try {
-            String path1 = android.os.Environment.getExternalStorageDirectory()
-                    .toString();
-            Log.i("in save()", "after mkdir");
-            File file = new File(path1 + "/" + "Boolawa");
-            if (!file.exists())
-                file.mkdirs();
-            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
-            Log.i("in save()", "after file");
-            FileOutputStream out = new FileOutputStream(filename);
-            Log.i("in save()", "after outputstream");
-            bmImg.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-            Log.i("in save()", "after outputstream closed");
-            //File parent = filename.getParentFile();
-            ContentValues image = getImageContent(filename);
-            Uri result = getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, image);
-            Toast.makeText(getApplicationContext(),
-                    "File is Saved in  " + filename, Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     public ContentValues getImageContent(File parent) {

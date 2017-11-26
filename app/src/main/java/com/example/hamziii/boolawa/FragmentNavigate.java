@@ -117,7 +117,7 @@ public class FragmentNavigate extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if(dataSnapshot.hasChild(uploaderId)){
+                        if(dataSnapshot.child(uploaderId).hasChild("friendName")){
 
                             viewHolder.setCaption(model.getCaption());
                             viewHolder.setEventImage(getActivity() , model.getEventImage());
@@ -166,7 +166,7 @@ public class FragmentNavigate extends Fragment {
             mProgress.setMessage("Posting Image...");
             mProgress.show();
 
-            StorageReference filePath = mStorage.child("Company_Products").child(imageUri.getLastPathSegment());
+            StorageReference filePath = mStorage.child("EventPictures").child(imageUri.getLastPathSegment());
             filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

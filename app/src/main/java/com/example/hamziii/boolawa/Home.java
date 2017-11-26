@@ -1,5 +1,6 @@
 package com.example.hamziii.boolawa;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -20,6 +22,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,6 +57,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
 
         mAuth = FirebaseAuth.getInstance();
+
+
 
         mAuthListner = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -130,6 +136,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
+            case R.id.nav_friends:
+                Intent intent5 = new Intent(Home.this, Friends.class);
+                intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent5);
+                break;
+            case R.id.nav_userEvents:
+                Intent intent6 = new Intent(Home.this, UserCreatedInvitations.class);
+                intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent6);
+                break;
+            case R.id.nav_userEventsStatus:
+                Intent intent7 = new Intent(Home.this, InvitationStatus.class);
+                intent7.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent7);
+                break;
             case R.id.nav_account:
                 Intent intent4 = new Intent(Home.this, Account.class);
                 intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -148,7 +169,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(intent3);
                 break;
             case R.id.nav_exit:
-                super.onBackPressed();
+                mAuth.getInstance().signOut();
+
+                Intent intent8 = new Intent(Home.this , LoginActivity.class);
+                intent8.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent8);
                 break;
         }
 
@@ -169,7 +194,34 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Do you want to logout ?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    mAuth.getInstance().signOut();
+
+                    Intent intent = new Intent(Home.this , LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    dialog.dismiss();
+
+                }
+            });
+
+            final AlertDialog ad = builder.create();
+            ad.show();
+
+
         }
     }
 

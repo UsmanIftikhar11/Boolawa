@@ -8,14 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by mAni on 02/10/2017.
@@ -25,7 +30,7 @@ public class FragmentViewInvitation extends Fragment {
 
     private RecyclerView minvitationList ;
 
-    private DatabaseReference mDatabase ;
+    private DatabaseReference mDatabase , mDatabaseCard ;
     private Query mQueryCategory ;
     private FirebaseAuth mAuth ;
 
@@ -39,7 +44,7 @@ public class FragmentViewInvitation extends Fragment {
         minvitationList.setHasFixedSize(true);
         minvitationList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("UserInvitation");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("CreatedEvent");
         mQueryCategory = mDatabase.orderByChild("UserId").equalTo(mAuth.getCurrentUser().getUid());
 
         mDatabase.keepSynced(true);
@@ -50,42 +55,161 @@ public class FragmentViewInvitation extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseRecyclerAdapter<Users , InvitationViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, InvitationViewHolder>(
 
-                Users.class ,
-                R.layout.user_invitation ,
-                InvitationViewHolder.class ,
-                mQueryCategory
+                    FirebaseRecyclerAdapter<Users , InvitationViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, InvitationViewHolder>(
 
-        ) {
-            @Override
-            protected void populateViewHolder(InvitationViewHolder viewHolder, Users model, int position) {
+                            Users.class ,
+                            R.layout.user_invitation ,
+                            InvitationViewHolder.class ,
+                            mDatabase
 
+                    ) {
+                        @Override
+                        protected void populateViewHolder(final InvitationViewHolder viewHolder, final Users model, int position) {
 
-                viewHolder.setImage(getActivity() , model.getImage());
+                            final String cardId = getRef(position).getKey();
+                            mDatabaseCard = mDatabase.child(cardId).child(mAuth.getCurrentUser().getUid());
 
-            }
-        };
+                            mDatabaseCard.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-        minvitationList.setAdapter(firebaseRecyclerAdapter);
+                                    if(dataSnapshot.hasChild("status")){
+
+                                        viewHolder.setInvitationCard(getActivity() , model.getInvitationCard());
+                                        viewHolder.setbtnInvisible(cardId);
+
+                                        viewHolder.btn_yes.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                mDatabaseCard.child("confirmation").setValue("Yes");
+
+                                            }
+                                        });
+
+                                        viewHolder.btn_maybe.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                mDatabaseCard.child("confirmation").setValue("Maybe");
+                                            }
+                                        });
+
+                                        viewHolder.btn_no.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                mDatabaseCard.child("confirmation").setValue("No");
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+                    };
+
+                    minvitationList.setAdapter(firebaseRecyclerAdapter);
+
     }
 
     public static class InvitationViewHolder extends RecyclerView.ViewHolder{
 
         View mView ;
+        Button btn_yes , btn_no , btn_maybe ;
+        DatabaseReference mDatabaseCard ;
+        FirebaseAuth mAuth ;
 
         public InvitationViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView ;
+
+             mAuth = FirebaseAuth.getInstance();
+            mDatabaseCard = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(mAuth.getCurrentUser().getUid());
+
+            mDatabaseCard.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    if(dataSnapshot.child("confirmation").getValue().toString().equals("Yes")){
+
+                        btn_yes.setText("Going");
+
+                        btn_no.setEnabled(false);
+                        btn_no.setVisibility(View.INVISIBLE);
+
+                        btn_maybe.setEnabled(false);
+                        btn_maybe.setVisibility(View.INVISIBLE);
+
+                    }
+
+                    else if(dataSnapshot.child("confirmation").getValue().toString().equals("Maybe")){
+
+                        btn_maybe.setText("Intrested");
+
+                        btn_no.setEnabled(false);
+                        btn_no.setVisibility(View.INVISIBLE);
+
+                        btn_yes.setEnabled(false);
+                        btn_yes.setVisibility(View.INVISIBLE);
+
+                    }
+
+                    else if(dataSnapshot.child("confirmation").getValue().toString().equals("No")){
+
+                        btn_no.setText("Not Going");
+
+                        btn_yes.setEnabled(false);
+                        btn_yes.setVisibility(View.INVISIBLE);
+
+                        btn_maybe.setEnabled(false);
+                        btn_maybe.setVisibility(View.INVISIBLE);
+
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            btn_yes = (Button)mView.findViewById(R.id.btn_yes);
+            btn_no = (Button)mView.findViewById(R.id.btn_no);
+            btn_maybe = (Button)mView.findViewById(R.id.btn_maybe);
         }
 
 
-        public void setImage (Context ctx , String image){
+        public void setInvitationCard (Context ctx , String invitationCard){
             ImageView accessories_post_img = (ImageView)mView.findViewById(R.id.user_invitaionCard);
-            Glide.with(ctx).load(image).into(accessories_post_img);
+            Glide.with(ctx).load(invitationCard).into(accessories_post_img);
         }
 
+        public void setbtnInvisible(String id){
+
+        }
 
     }
 }

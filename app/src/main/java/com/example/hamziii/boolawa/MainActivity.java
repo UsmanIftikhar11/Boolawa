@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent  startNewActivity= new Intent(MainActivity.this,LoginActivity.class);
         startActivity(startNewActivity);
+        this.finish();
 
     }
 
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent startNewActivity = new Intent(MainActivity.this,SignUpActivity.class);
         startActivity(startNewActivity);
+        this.finish();
 
     }
 
@@ -34,8 +36,14 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent startNewActivity = new Intent(MainActivity.this,ServiceProviderLogin.class);
         startActivity(startNewActivity);
+        this.finish();
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 }
 

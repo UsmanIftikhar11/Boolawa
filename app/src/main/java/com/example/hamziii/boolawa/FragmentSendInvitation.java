@@ -1,15 +1,32 @@
 package com.example.hamziii.boolawa;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
@@ -22,20 +39,33 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentSendInvitation extends Fragment {
 
     private ImageView addImage ;
-    private Button sendGmail , sendWhatsapp ;
+    private Button sendGmail , sendWhatsapp , btn_inApp ;
 
     private Uri imageUri = null ;
 
     private static final int GALLERY_REQUEST = 1 ;
+
+    private StorageReference mStorage ;
+    private DatabaseReference mDatabse ;
+    private FirebaseAuth mAuth ;
+    private ProgressDialog mProgress ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_send_invitation, container, false);
 
+        mAuth = FirebaseAuth.getInstance();
+        mStorage = FirebaseStorage.getInstance().getReference();
+        mDatabse = FirebaseDatabase.getInstance().getReference().child("CreatedEvent");
+
+        mProgress = new ProgressDialog(getActivity());
+
         addImage = (ImageView)rootView.findViewById(R.id.add_btn);
         sendGmail = (Button)rootView.findViewById(R.id.btn_sendGmail);
         sendWhatsapp = (Button)rootView.findViewById(R.id.btn_sendWhatsapp);
+
+        btn_inApp = (Button)rootView.findViewById(R.id.btn_inApp);
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +112,66 @@ public class FragmentSendInvitation extends Fragment {
 
         });
 
+        btn_inApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startPosting();
+                /*Intent intent = new Intent(getActivity() , InAppInvitation.class);
+                intent.putExtra("imageUri" , imageUri);
+                startActivity(intent);*/
+            }
+        });
+
         return rootView;
+    }
+
+    private void startPosting() {
+
+        if(imageUri != null){
+
+            mProgress.setMessage("Posting Image...");
+            mProgress.show();
+
+            StorageReference filePath = mStorage.child("InvitationCards").child(imageUri.getLastPathSegment());
+            filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    @SuppressWarnings("VisibleForTests") final Uri downlaodUrl = taskSnapshot.getDownloadUrl();
+                    final DatabaseReference newProduct = mDatabse.push();
+
+                    mDatabse.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            newProduct.child("InvitationCard").setValue(downlaodUrl.toString());
+                            newProduct.child("CreatedBy").setValue(mAuth.getCurrentUser().getUid()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    /*Intent intent = new Intent(getActivity() , UserCreatedInvitations.class);
+                                    startActivity(intent);*/
+
+                                    Toast.makeText(getActivity() , "Event Created" , Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    mProgress.dismiss();
+                    imageUri = null ;
+                }
+            });
+
+        }
+        else {
+            Toast.makeText(getActivity() , "Must select an invitation card" , Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

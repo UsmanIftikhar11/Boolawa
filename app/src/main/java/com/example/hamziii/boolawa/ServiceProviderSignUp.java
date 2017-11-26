@@ -143,7 +143,7 @@ public class ServiceProviderSignUp extends AppCompatActivity {
                                 caterer_user_db.child("Availability").setValue("Available");
 
                                 mprogress.dismiss();
-                                Intent intent = new Intent(ServiceProviderSignUp.this , ServiceProviderHome.class);
+                                Intent intent = new Intent(ServiceProviderSignUp.this , ServceProviderShowHire.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }

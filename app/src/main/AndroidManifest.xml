@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Home" />
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".SignUpActivity"
             android:configChanges="orientation|screenSize" />
@@ -68,7 +68,7 @@
             android:label="@string/title_activity_design_cards"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Home"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme" />
         <activity android:name=".ContactUs" />
@@ -97,7 +97,13 @@
         <activity android:name=".ServiceProviderSignUp" />
         <activity android:name=".ServiceProviderHome" />
         <activity android:name=".AllUsers" />
-        <activity android:name=".SingleUser"></activity>
+        <activity android:name=".SingleUser" />
+        <activity android:name=".Friends" />
+        <activity android:name=".InAppInvitation" />
+        <activity android:name=".UserCreatedInvitations" />
+        <activity android:name=".InvitationStatus" />
+        <activity android:name=".SingleInvitationStatus" />
+        <activity android:name=".ServceProviderShowHire"></activity>
     </application>
 
 </manifest>

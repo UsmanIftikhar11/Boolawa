@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListner = new FirebaseAuth.AuthStateListener() {
@@ -61,6 +63,17 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         };
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            Intent i = new Intent(LoginActivity.this, Home.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        } else {
+            // User is signed out
+            Log.d(TAG, "onAuthStateChanged:signed_out");
+        }
 
         mEmailField = (EditText)findViewById(R.id.editText_login_email);
         mpasswordField = (EditText)findViewById(R.id.editText_login_password);
@@ -124,6 +137,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void checkLogin() {
 
@@ -320,9 +335,19 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void onBackPressed()
+    /*public void onBackPressed()
     {
         Intent startNewActivity= new Intent(LoginActivity.this,MainActivity.class);
         startActivity(startNewActivity);
+    }*/
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        Intent startNewActivity= new Intent(LoginActivity.this,MainActivity.class);
+        startNewActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(startNewActivity);
+        this.finish();
     }
 }
