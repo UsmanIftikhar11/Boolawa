@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -65,7 +66,106 @@ public class ServceProviderShowHire extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                photoHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
+                if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild("name")){
+
+                    photoHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
+
+                    /*mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            String hiredName1 = dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() ;
+
+                            txt_hiredByName.setText(hiredName1);
+
+                            Toast.makeText(getApplicationContext() , dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() , Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });*/
+
+                    mDatabaseUsers.child(photoHiredBy).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String hiredName1 = dataSnapshot.child("UserName").getValue().toString() ;
+
+                            txt_hiredByName.setText(hiredName1);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                else {
+
+                    mDatabsaeCat.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).exists()){
+
+                                catHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
+
+                                mDatabaseUsers.child(catHiredBy).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String hiredName = dataSnapshot.child("UserName").getValue().toString() ;
+
+                                        txt_hiredByName.setText(hiredName);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                                //Toast.makeText(getApplicationContext() , catHiredBy , Toast.LENGTH_LONG).show();
+
+                    /*mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            String hiredName = dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() ;
+
+                            txt_hiredByName.setText(hiredName);
+
+                            Toast.makeText(getApplicationContext() , dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() , Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });*/
+                            }
+
+                            else {
+
+                                txt_hiredByName.setText("No One");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                /*if(!TextUtils.isEmpty(photoHiredBy)){
+                }*/
+
+                /*else {
+
+                    txt_hiredByName.setText("No One12");
+                }*/
 
             }
 
@@ -75,52 +175,7 @@ public class ServceProviderShowHire extends AppCompatActivity {
             }
         });
 
-        mDatabsaeCat.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                catHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        if(!TextUtils.isEmpty(photoHiredBy)){
-
-            mDatabaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    txt_hiredByName.setText(photoHiredBy);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        else if (!TextUtils.isEmpty(catHiredBy)){
-
-            mDatabaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    txt_hiredByName.setText(photoHiredBy);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        else {
-
-            txt_hiredByName.setText("No One");
-        }
 
     }
 

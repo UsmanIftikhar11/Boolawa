@@ -67,7 +67,7 @@ public class Friends extends AppCompatActivity {
                             public void onClick(View v) {
 
                                 Intent singleProduct = new Intent(Friends.this , SingleUser.class);
-                                singleProduct.putExtra("userName" , model.getUserName());
+                                singleProduct.putExtra("userName" , model.getFriendName());
                                 singleProduct.putExtra("user_id" , user_id);
 
                                 startActivity(singleProduct);
@@ -102,23 +102,25 @@ public class Friends extends AppCompatActivity {
 
                         final String user_id = getRef(position).getKey();
 
-                        mDatabaseCurrentReqUsers.addValueEventListener(new ValueEventListener() {
+                        viewHolder.setSent_By(model.getSent_By());
+
+                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Intent singleProduct = new Intent(Friends.this , SingleUser.class);
+                                singleProduct.putExtra("userName" , model.getSent_By());
+                                singleProduct.putExtra("user_id" , user_id);
+
+                                startActivity(singleProduct);
+                            }
+                        });
+
+                        /*mDatabaseCurrentReqUsers.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.hasChild("Sent_By")){
-                                    viewHolder.setSent_By(model.getSent_By());
 
-                                    viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                            Intent singleProduct = new Intent(Friends.this , SingleUser.class);
-                                            singleProduct.putExtra("userName" , model.getUserName());
-                                            singleProduct.putExtra("user_id" , user_id);
-
-                                            startActivity(singleProduct);
-                                        }
-                                    });
 
                                 }
                             }
@@ -127,7 +129,7 @@ public class Friends extends AppCompatActivity {
                             public void onCancelled(DatabaseError databaseError) {
 
                             }
-                        });
+                        });*/
 
                 /*viewHolder.setSent_By(model.getSent_By());
 

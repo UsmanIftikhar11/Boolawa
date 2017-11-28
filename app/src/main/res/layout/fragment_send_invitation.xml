@@ -3,47 +3,61 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/add_btn"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/add_btn"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"/>
+        android:layout_marginBottom="20dp">
 
-    <Button
-        android:id="@+id/btn_sendGmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/add_btn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="Send using gmail"
-        android:background="@drawable/savebtn_style"
-        android:padding="10dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
 
-    <Button
-        android:id="@+id/btn_sendWhatsapp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_sendGmail"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="send using whatsapp"
-        android:background="@drawable/savebtn_style"
-        android:padding="10dp"/>
+            <ImageView
+                android:id="@+id/add_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/add_btn"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"/>
 
-    <Button
-        android:id="@+id/btn_inApp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_sendWhatsapp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="send Invitation to Friends"
-        android:background="@drawable/savebtn_style"
-        android:padding="10dp"/>
+            <Button
+                android:id="@+id/btn_sendGmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="Send using gmail"
+                android:background="@drawable/savebtn_style"
+                android:padding="10dp"/>
+
+            <Button
+                android:id="@+id/btn_sendWhatsapp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_sendGmail"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="send using whatsapp"
+                android:background="@drawable/savebtn_style"
+                android:padding="10dp"/>
+
+            <Button
+                android:id="@+id/btn_inApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_sendWhatsapp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Create Invitation"
+                android:background="@drawable/savebtn_style"
+                android:padding="10dp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

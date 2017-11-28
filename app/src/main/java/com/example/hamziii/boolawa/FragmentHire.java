@@ -28,7 +28,7 @@ public class FragmentHire extends Fragment {
 
     private RecyclerView mServiceList ;
 
-    private DatabaseReference mDatabase , mDatabasePhoto , mDatabaseCat ;
+    private DatabaseReference mDatabase , mDatabasePhoto , mDatabaseCat , mDatabaseUsers ;
 
     private FirebaseAuth mAuth ;
     private Query mQueryPhoto , mQueryCat ;
@@ -43,6 +43,8 @@ public class FragmentHire extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_hire, container, false);
 
         mAuth = FirebaseAuth.getInstance() ;
+
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
 
         btn_caterer = (Button) rootView.findViewById(R.id.btn_caterer);
         btn_photo = (Button) rootView.findViewById(R.id.btn_photographer);

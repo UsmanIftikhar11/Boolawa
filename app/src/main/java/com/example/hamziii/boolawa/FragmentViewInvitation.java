@@ -32,7 +32,9 @@ public class FragmentViewInvitation extends Fragment {
 
     private DatabaseReference mDatabase , mDatabaseCard ;
     private Query mQueryCategory ;
-    private FirebaseAuth mAuth ;
+    private FirebaseAuth mAuth;
+
+    String cardId ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +46,8 @@ public class FragmentViewInvitation extends Fragment {
         minvitationList.setHasFixedSize(true);
         minvitationList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("CreatedEvent");
-        mQueryCategory = mDatabase.orderByChild("UserId").equalTo(mAuth.getCurrentUser().getUid());
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(mAuth.getCurrentUser().getUid());
+        mQueryCategory = mDatabase.orderByChild("status").equalTo("Invited");
 
         mDatabase.keepSynced(true);
 
@@ -61,56 +63,58 @@ public class FragmentViewInvitation extends Fragment {
                             Users.class ,
                             R.layout.user_invitation ,
                             InvitationViewHolder.class ,
-                            mDatabase
+                            mQueryCategory
 
                     ) {
                         @Override
                         protected void populateViewHolder(final InvitationViewHolder viewHolder, final Users model, int position) {
 
-                            final String cardId = getRef(position).getKey();
-                            mDatabaseCard = mDatabase.child(cardId).child(mAuth.getCurrentUser().getUid());
+                            cardId = getRef(position).getKey();
+                            mDatabaseCard = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(cardId).child(mAuth.getCurrentUser().getUid());
+                            viewHolder.setInvitationCard(getActivity() , model.getInvitationCard());
+                            //viewHolder.setbtnInvisible(cardId);
 
-                            mDatabaseCard.addValueEventListener(new ValueEventListener() {
+                            viewHolder.btn_yes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    mDatabaseCard.child("confirmation").setValue("Yes");
+
+                                }
+                            });
+
+                            viewHolder.btn_maybe.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    mDatabaseCard.child("confirmation").setValue("Maybe");
+                                }
+                            });
+
+                            viewHolder.btn_no.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    mDatabaseCard.child("confirmation").setValue("No");
+                                }
+                            });
+
+                            /*mDatabaseCard.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                                     if(dataSnapshot.hasChild("status")){
 
-                                        viewHolder.setInvitationCard(getActivity() , model.getInvitationCard());
-                                        viewHolder.setbtnInvisible(cardId);
 
-                                        viewHolder.btn_yes.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-
-                                                mDatabaseCard.child("confirmation").setValue("Yes");
-
-                                            }
-                                        });
-
-                                        viewHolder.btn_maybe.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-
-                                                mDatabaseCard.child("confirmation").setValue("Maybe");
-                                            }
-                                        });
-
-                                        viewHolder.btn_no.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-
-                                                mDatabaseCard.child("confirmation").setValue("No");
-                                            }
-                                        });
                                     }
+
                                 }
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
 
                                 }
-                            });
+                            });*/
 
                         }
                     };
@@ -132,7 +136,21 @@ public class FragmentViewInvitation extends Fragment {
             mView = itemView ;
 
              mAuth = FirebaseAuth.getInstance();
-            mDatabaseCard = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(mAuth.getCurrentUser().getUid());
+
+            btn_yes = (Button)mView.findViewById(R.id.btn_yes);
+            btn_no = (Button)mView.findViewById(R.id.btn_no);
+            btn_maybe = (Button)mView.findViewById(R.id.btn_maybe);
+        }
+
+
+        public void setInvitationCard (Context ctx , String invitationCard){
+            ImageView accessories_post_img = (ImageView)mView.findViewById(R.id.user_invitaionCard);
+            Glide.with(ctx).load(invitationCard).into(accessories_post_img);
+        }
+
+        /*public void setbtnInvisible(String id){
+
+            mDatabaseCard = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(id).child(mAuth.getCurrentUser().getUid());
 
             mDatabaseCard.addChildEventListener(new ChildEventListener() {
                 @Override
@@ -196,20 +214,7 @@ public class FragmentViewInvitation extends Fragment {
                 }
             });
 
-            btn_yes = (Button)mView.findViewById(R.id.btn_yes);
-            btn_no = (Button)mView.findViewById(R.id.btn_no);
-            btn_maybe = (Button)mView.findViewById(R.id.btn_maybe);
-        }
-
-
-        public void setInvitationCard (Context ctx , String invitationCard){
-            ImageView accessories_post_img = (ImageView)mView.findViewById(R.id.user_invitaionCard);
-            Glide.with(ctx).load(invitationCard).into(accessories_post_img);
-        }
-
-        public void setbtnInvisible(String id){
-
-        }
+        }*/
 
     }
 }

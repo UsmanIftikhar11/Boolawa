@@ -163,14 +163,19 @@ public class SingleUser extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
 
 
-                                        mFriendReqDatabase.child(userId).child(mCurrentUser.getUid()).child("Sent_By").setValue(userName);
-                                        mCurrent_State = "req_sent" ;
-                                        btn_sendReq.setText("Cancel Request");
+                                        mFriendReqDatabase.child(userId).child(mCurrentUser.getUid()).child("Sent_By").setValue(userName).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                mCurrent_State = "req_sent" ;
+                                                btn_sendReq.setText("Cancel Request");
 
-                                        btn_declineReq.setVisibility(View.INVISIBLE);
-                                        btn_declineReq.setEnabled(false);
+                                                btn_declineReq.setVisibility(View.INVISIBLE);
+                                                btn_declineReq.setEnabled(false);
 
-                                        Toast.makeText(getApplicationContext() , "Request Sent!!!" , Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext() , "Request Sent!!!" , Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
                                     }
                                 });
 
