@@ -2,6 +2,7 @@ package com.example.hamziii.boolawa;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +33,7 @@ public class FragmentViewInvitation extends Fragment {
 
     private RecyclerView minvitationList ;
 
-    private DatabaseReference mDatabase , mDatabaseCard ;
+    private DatabaseReference mDatabase , mDatabaseCard , mDatabaseUsers ;
     private Query mQueryCategory ;
     private FirebaseAuth mAuth;
 
@@ -46,8 +49,9 @@ public class FragmentViewInvitation extends Fragment {
         minvitationList.setHasFixedSize(true);
         minvitationList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(mAuth.getCurrentUser().getUid());
-        mQueryCategory = mDatabase.orderByChild("status").equalTo("Invited");
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("CreatedEvent");
+        mQueryCategory = mDatabase.orderByChild(mAuth.getCurrentUser().getUid()).equalTo("Invited");
 
         mDatabase.keepSynced(true);
 
@@ -70,7 +74,7 @@ public class FragmentViewInvitation extends Fragment {
                         protected void populateViewHolder(final InvitationViewHolder viewHolder, final Users model, int position) {
 
                             cardId = getRef(position).getKey();
-                            mDatabaseCard = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(cardId).child(mAuth.getCurrentUser().getUid());
+                            mDatabaseCard = FirebaseDatabase.getInstance().getReference().child("InvitationStatus").child(cardId).child(mAuth.getCurrentUser().getUid());
                             viewHolder.setInvitationCard(getActivity() , model.getInvitationCard());
                             //viewHolder.setbtnInvisible(cardId);
 
@@ -78,7 +82,22 @@ public class FragmentViewInvitation extends Fragment {
                                 @Override
                                 public void onClick(View v) {
 
-                                    mDatabaseCard.child("confirmation").setValue("Yes");
+                                    mDatabaseCard.child("confirmation").setValue("Yes").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    mDatabaseCard.child("InvitationTo").setValue(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("UserName").getValue());
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+                                        }
+                                    });
 
                                 }
                             });
@@ -87,7 +106,22 @@ public class FragmentViewInvitation extends Fragment {
                                 @Override
                                 public void onClick(View v) {
 
-                                    mDatabaseCard.child("confirmation").setValue("Maybe");
+                                    mDatabaseCard.child("confirmation").setValue("Maybe").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    mDatabaseCard.child("InvitationTo").setValue(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("UserName").getValue());
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+                                        }
+                                    });;
                                 }
                             });
 
@@ -95,7 +129,22 @@ public class FragmentViewInvitation extends Fragment {
                                 @Override
                                 public void onClick(View v) {
 
-                                    mDatabaseCard.child("confirmation").setValue("No");
+                                    mDatabaseCard.child("confirmation").setValue("No").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    mDatabaseCard.child("InvitationTo").setValue(dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("UserName").getValue());
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+                                        }
+                                    });;
                                 }
                             });
 

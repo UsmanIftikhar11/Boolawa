@@ -74,7 +74,7 @@ public class InAppInvitation extends AppCompatActivity {
                 String id = getRef(position).getKey();
 
                 viewHolder.setFriendName(model.getFriendName());
-                viewHolder.setBtnText(id);
+                viewHolder.setBtnText(id , cardKey);
 
                 Toast.makeText(getApplicationContext() , id, Toast.LENGTH_LONG).show();
 
@@ -83,8 +83,8 @@ public class InAppInvitation extends AppCompatActivity {
                     public void onClick(View v) {
 
                         user_id = getRef(position).getKey();
-                        mInvitedUsersDatabase = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(cardKey).child(user_id);
-                        mInvitedUsersDatabase.child("status").setValue("Invited");
+                        mInvitedUsersDatabase = FirebaseDatabase.getInstance().getReference().child("CreatedEvent").child(cardKey);
+                        mInvitedUsersDatabase.child(user_id).setValue("Invited");
                         //viewHolder.btn_sendInvitation.setText("Invitation sent");
 
                     }
@@ -115,14 +115,14 @@ public class InAppInvitation extends AppCompatActivity {
             post_sendInvitation.setText(friendName);
         }
 
-        public void setBtnText(final String id){
+        public void setBtnText(final String id , final String cardKey){
 
             //mDatabaseUsers = mDatabase.child(user_id) ;
 
             mDatabase.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    if(dataSnapshot.child(id).hasChild("status")){
+                    if(dataSnapshot.child(cardKey).hasChild(id)){
 
                         btn_sendInvitation.setText("Invitation Sent");
                     }

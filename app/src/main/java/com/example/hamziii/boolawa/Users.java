@@ -10,13 +10,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Users
 {
-    private String Image , Name , Email , Price , Service , UserName , phone , charges , Caption , EventImage , UploaderId , friendName , Sent_By , InvitationCard , CreatedBy  , HiredBy;
+    private String Image , Name , Email , Price , Service , UserName , phone , charges , Caption , EventImage , UploaderId , friendName , Sent_By , InvitationCard , CreatedBy  , HiredBy , confirmation , InvitationTo ;
 
     public Users(){
 
     }
 
-    public Users(String image, String name, String email, String price, String service, String userName, String phone, String charges, String caption, String eventImage, String uploaderId, String friendName, String sent_By, String invitationCard, String createdBy, String hiredBy) {
+    public Users(String image, String name, String email, String price, String service, String userName, String phone, String charges, String caption, String eventImage, String uploaderId, String friendName, String sent_By, String invitationCard, String createdBy, String hiredBy, String confirmation, String invitationTo) {
         Image = image;
         Name = name;
         Email = email;
@@ -33,6 +33,8 @@ public class Users
         InvitationCard = invitationCard;
         CreatedBy = createdBy;
         HiredBy = hiredBy;
+        this.confirmation = confirmation;
+        InvitationTo = invitationTo;
     }
 
     public String getImage() {
@@ -161,5 +163,21 @@ public class Users
 
     public void setHiredBy(String hiredBy) {
         HiredBy = hiredBy;
+    }
+
+    public String getConfirmation() {
+        return confirmation;
+    }
+
+    public void setConfirmation(String confirmation) {
+        this.confirmation = confirmation;
+    }
+
+    public String getInvitationTo() {
+        return InvitationTo;
+    }
+
+    public void setInvitationTo(String invitationTo) {
+        InvitationTo = invitationTo;
     }
 }
