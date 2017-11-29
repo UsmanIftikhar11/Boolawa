@@ -29,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.Random;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -133,7 +134,7 @@ public class FragmentSendInvitation extends Fragment {
             mProgress.setMessage("Posting Image...");
             mProgress.show();
 
-            StorageReference filePath = mStorage.child("InvitationCards").child(imageUri.getLastPathSegment());
+            StorageReference filePath = mStorage.child("InvitationCards").child(imageUri + random());
             filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -182,5 +183,17 @@ public class FragmentSendInvitation extends Fragment {
             imageUri = data.getData();
             addImage.setImageURI(imageUri);
         }
+    }
+
+    public static String random() {
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(5);
+        char tempChar;
+        for (int i = 0; i < randomLength; i++){
+            tempChar = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(tempChar);
+        }
+        return randomStringBuilder.toString();
     }
 }

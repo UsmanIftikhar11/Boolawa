@@ -185,7 +185,7 @@ public class ServiceProviderLogin extends AppCompatActivity {
 
                     if(dataSnapshot.hasChild(user_id)){
 
-                        Intent mainIntent = new Intent(ServiceProviderLogin.this , ServiceProviderHome.class);
+                        Intent mainIntent = new Intent(ServiceProviderLogin.this , ServceProviderShowHire.class);
                         mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(mainIntent);
 
@@ -211,8 +211,15 @@ public class ServiceProviderLogin extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ServiceProviderLogin.this , MainActivity.class);
+
+        //super.onBackPressed();
+        /*Intent intent = new Intent(ServiceProviderLogin.this , MainActivity.class);
         startActivity(intent);
-        finish();
+        finish();*/
+
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

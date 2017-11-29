@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/invitation3"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"/>
+            android:scaleType="fitXY"/>
 
         <TextView
             android:id="@+id/txt_invited_to"

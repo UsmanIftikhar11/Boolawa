@@ -11,7 +11,7 @@
         android:layout_marginTop="20dp"
         android:src="@drawable/add_img"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitXY"/>
 
     <EditText
         android:id="@+id/txt_picDetail"

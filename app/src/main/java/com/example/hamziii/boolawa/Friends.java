@@ -75,7 +75,6 @@ public class Friends extends AppCompatActivity {
                         });
 
 
-
                     }
                 };
                 mFriendReqList.setAdapter(firebaseRecyclerAdapter);

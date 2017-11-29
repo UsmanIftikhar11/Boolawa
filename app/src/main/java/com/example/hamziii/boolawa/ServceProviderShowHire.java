@@ -66,40 +66,32 @@ public class ServceProviderShowHire extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).hasChild("name")){
+                if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).exists()) {
 
-                    photoHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
+                    if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").exists()) {
 
-                    /*mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            String hiredName1 = dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() ;
+                        photoHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
 
-                            txt_hiredByName.setText(hiredName1);
+                        mDatabaseUsers.child(photoHiredBy).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String hiredName1 = dataSnapshot.child("UserName").getValue().toString();
 
-                            Toast.makeText(getApplicationContext() , dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() , Toast.LENGTH_LONG).show();
-                        }
+                                txt_hiredByName.setText(hiredName1);
+                            }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });*/
+                            }
+                        });
 
-                    mDatabaseUsers.child(photoHiredBy).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String hiredName1 = dataSnapshot.child("UserName").getValue().toString() ;
+                    }
+                    else {
 
-                            txt_hiredByName.setText(hiredName1);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                        txt_hiredByName.setText("No One");
+                    }
                 }
 
                 else {
@@ -125,25 +117,6 @@ public class ServceProviderShowHire extends AppCompatActivity {
 
                                     }
                                 });
-
-                                //Toast.makeText(getApplicationContext() , catHiredBy , Toast.LENGTH_LONG).show();
-
-                    /*mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            String hiredName = dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() ;
-
-                            txt_hiredByName.setText(hiredName);
-
-                            Toast.makeText(getApplicationContext() , dataSnapshot.child(photoHiredBy).child("UserName").getValue().toString() , Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });*/
                             }
 
                             else {
@@ -158,14 +131,6 @@ public class ServceProviderShowHire extends AppCompatActivity {
                         }
                     });
                 }
-
-                /*if(!TextUtils.isEmpty(photoHiredBy)){
-                }*/
-
-                /*else {
-
-                    txt_hiredByName.setText("No One12");
-                }*/
 
             }
 
