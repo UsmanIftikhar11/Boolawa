@@ -100,29 +100,36 @@ public class ServceProviderShowHire extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).exists()){
+                            if(dataSnapshot.child(mAuth.getCurrentUser().getUid()).exists()) {
 
-                                catHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
+                                if (dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").exists()) {
 
-                                mDatabaseUsers.child(catHiredBy).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        String hiredName = dataSnapshot.child("UserName").getValue().toString() ;
 
-                                        txt_hiredByName.setText(hiredName);
-                                    }
+                                    catHiredBy = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("HiredBy").getValue().toString();
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                    mDatabaseUsers.child(catHiredBy).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            String hiredName = dataSnapshot.child("UserName").getValue().toString();
 
-                                    }
-                                });
+                                            txt_hiredByName.setText(hiredName);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+
+                                else {
+
+                                    txt_hiredByName.setText("No One");
+                                }
                             }
 
-                            else {
 
-                                txt_hiredByName.setText("No One");
-                            }
                         }
 
                         @Override

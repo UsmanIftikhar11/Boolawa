@@ -212,6 +212,8 @@ public class FragmentNavigate extends Fragment {
         }
     }
 
+
+
     public static String random() {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
