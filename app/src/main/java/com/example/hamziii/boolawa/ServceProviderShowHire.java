@@ -164,6 +164,7 @@ public class ServceProviderShowHire extends AppCompatActivity {
                 mAuth.getInstance().signOut();
 
                 Intent intent = new Intent(ServceProviderShowHire.this , ServiceProviderLogin.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });

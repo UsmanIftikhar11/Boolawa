@@ -24,21 +24,6 @@
             android:icon="@drawable/ic_menu_gallery"/>
 
         <item
-            android:id="@+id/nav_account"
-            android:title="My Account"
-            android:icon="@drawable/ic_menu_gallery"/>
-
-        <item
-            android:id="@+id/nav_contact"
-            android:title="Contact Us"
-            android:icon="@drawable/ic_menu_gallery"/>
-
-        <item
-            android:id="@+id/nav_help"
-            android:title="Help"
-            android:icon="@drawable/ic_menu_gallery"/>
-
-        <item
             android:id="@+id/nav_navigate"
             android:title="Get directions"
             android:icon="@drawable/ic_menu_gallery"/>

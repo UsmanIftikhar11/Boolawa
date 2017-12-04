@@ -37,6 +37,7 @@ public class ServiceProviderLogin extends AppCompatActivity {
     private Boolean photographer = false ;
 
     private FirebaseAuth mAuth ;
+    private FirebaseAuth.AuthStateListener mAuthListner;
     private DatabaseReference mDatabase , mDatabaseCaterer , mDatabasePhotographer ;
     private ProgressDialog mProgress ;
 
@@ -53,6 +54,13 @@ public class ServiceProviderLogin extends AppCompatActivity {
         mDatabasePhotographer = mDatabase.child("Photographer");
         // mDatabasecompany.keepSynced(true);
         mProgress = new ProgressDialog(this);
+
+        mAuthListner = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+            }
+        };
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -213,13 +221,14 @@ public class ServiceProviderLogin extends AppCompatActivity {
     public void onBackPressed() {
 
         //super.onBackPressed();
-        /*Intent intent = new Intent(ServiceProviderLogin.this , MainActivity.class);
+        Intent intent = new Intent(ServiceProviderLogin.this , MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         startActivity(intent);
-        finish();*/
+        this.finish();
 
-        Intent a = new Intent(Intent.ACTION_MAIN);
+        /*Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(a);
+        startActivity(a);*/
     }
 }

@@ -73,6 +73,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         };
 
+
+
         tab = (TabLayout) findViewById(R.id.tabs);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,6 +89,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        /*TabLayout.Tab tab = tabLayout.getTabAt(Integer.parseInt(getIntent().getStringExtra("fragmentId")));
+        tab.select();*/
+
+        int defaultInt = 0 ;
+        int page = getIntent().getIntExtra("One", defaultInt);
+        mViewPager.setCurrentItem(page);
 
         mdrawerlayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mtoogle = new ActionBarDrawerToggle(this , mdrawerlayout , R.string.open , R.string.close);
@@ -150,19 +159,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 Intent intent7 = new Intent(Home.this, InvitationStatus.class);
                 intent7.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent7);
-                break;
-            case R.id.nav_account:
-                Intent intent4 = new Intent(Home.this, Account.class);
-                intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent4);
-                break;
-            case R.id.nav_contact:
-                Intent intent1 = new Intent(Home.this, ContactUs.class);
-                startActivity(intent1);
-                break;
-            case R.id.nav_help:
-                Intent intent2 = new Intent(Home.this, Help.class);
-                startActivity(intent2);
                 break;
             case R.id.nav_navigate:
                 Intent intent3 = new Intent(Home.this, GetDirection.class);

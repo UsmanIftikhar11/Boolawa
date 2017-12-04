@@ -110,7 +110,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                             File file = new File(path1 + "/" + "Boolawa");
                             if (!file.exists())
                                 file.mkdirs();
-                            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
+                            filename = new File(file.getAbsolutePath() + "/" + random() + ".jpg");
                             Log.i("in save()", "after file");
                             FileOutputStream out = new FileOutputStream(filename);
                             Log.i("in save()", "after outputstream");
@@ -132,6 +132,10 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                         File f = new File(String.valueOf(filename));
                         Uri contentUri = Uri.fromFile(f);
                         mediaScanIntent.setData(contentUri);
+
+                        Intent intent = new Intent(FinalizedInvitationCard.this , Home.class);
+                        intent.putExtra("One" , 1);
+                        startActivity(intent);
 
 
                     }
@@ -184,7 +188,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                             File file = new File(path1 + "/" + "Boolawa");
                             if (!file.exists())
                                 file.mkdirs();
-                            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
+                            filename = new File(file.getAbsolutePath() + "/" + random() + ".jpg");
                             Log.i("in save()", "after file");
                             FileOutputStream out = new FileOutputStream(filename);
                             Log.i("in save()", "after outputstream");
@@ -253,7 +257,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
                             File file = new File(path1 + "/" + "Boolawa");
                             if (!file.exists())
                                 file.mkdirs();
-                            filename = new File(file.getAbsolutePath() + "/" + "img1" + ".jpg");
+                            filename = new File(file.getAbsolutePath() + "/" + random() + ".jpg");
                             Log.i("in save()", "after file");
                             FileOutputStream out = new FileOutputStream(filename);
                             Log.i("in save()", "after outputstream");
@@ -293,7 +297,7 @@ public class FinalizedInvitationCard extends AppCompatActivity {
     public ContentValues getImageContent(File parent) {
         ContentValues image = new ContentValues();
         image.put(MediaStore.Images.Media.TITLE, "Boolawa");
-        image.put(MediaStore.Images.Media.DISPLAY_NAME, "img1");
+        image.put(MediaStore.Images.Media.DISPLAY_NAME, random());
         image.put(MediaStore.Images.Media.DESCRIPTION, "App Image");
         image.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
         image.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
@@ -305,5 +309,17 @@ public class FinalizedInvitationCard extends AppCompatActivity {
         image.put(MediaStore.Images.Media.SIZE, parent.length());
         image.put(MediaStore.Images.Media.DATA, parent.getAbsolutePath());
         return image;
+    }
+
+    public static String random() {
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(5);
+        char tempChar;
+        for (int i = 0; i < randomLength; i++){
+            tempChar = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(tempChar);
+        }
+        return randomStringBuilder.toString();
     }
 }

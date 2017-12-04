@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
@@ -261,14 +262,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
-    public void goToPasswordResetActivity(View view)
-    {
-        Intent startNewActivity= new Intent(LoginActivity.this,PasswordResetActivity.class);
-        startActivity(startNewActivity);
-
-    }
-
     /*public void onBackPressed()
     {
         Intent startNewActivity= new Intent(LoginActivity.this,MainActivity.class);
@@ -277,11 +270,11 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
 
-        /*Intent startNewActivity= new Intent(LoginActivity.this,MainActivity.class);
-        startNewActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent startNewActivity= new Intent(LoginActivity.this,MainActivity.class);
+        startNewActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         startActivity(startNewActivity);
-        this.finish();*/
+        this.finish();
     }
 }

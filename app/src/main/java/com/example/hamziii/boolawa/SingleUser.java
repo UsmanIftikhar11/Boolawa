@@ -30,6 +30,7 @@ public class SingleUser extends AppCompatActivity {
 
     private String mCurrent_State ;
     private String currentDate ;
+    private String mCurrentUserName ;
 
     private DatabaseReference mFriendReqDatabase ;
     private DatabaseReference mFriendDatabase , mDatabaseCurrentUserName ;
@@ -46,6 +47,19 @@ public class SingleUser extends AppCompatActivity {
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mDatabaseCurrentUserName = FirebaseDatabase.getInstance().getReference().child("Users").child(mCurrentUser.getUid()).child("UserName");
+
+        mDatabaseCurrentUserName.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mCurrentUserName = dataSnapshot.getValue().toString() ;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         userName = getIntent().getExtras().getString("userName");
         userId = getIntent().getExtras().getString("user_id");
@@ -163,7 +177,7 @@ public class SingleUser extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
 
 
-                                        mFriendReqDatabase.child(userId).child(mCurrentUser.getUid()).child("Sent_By").setValue(userName).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        mFriendReqDatabase.child(userId).child(mCurrentUser.getUid()).child("Sent_By").setValue(mCurrentUserName).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 mCurrent_State = "req_sent" ;
