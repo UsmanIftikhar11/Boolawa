@@ -136,6 +136,8 @@ public class ServiceProviderHome extends AppCompatActivity {
                     caterer_user_db.child("charges").setValue(updateCharges);
                     caterer_user_db.child("Availability").setValue("Available");
 
+                    caterer_user_db.child("HiredBy").removeValue();
+
                 }
 
                 else {
@@ -145,6 +147,8 @@ public class ServiceProviderHome extends AppCompatActivity {
                     caterer_user_db.child("phone").setValue(updateCntact);
                     caterer_user_db.child("charges").setValue(updateCharges);
                     caterer_user_db.child("Availability").setValue("Available");
+
+                    caterer_user_db.child("HiredBy").removeValue();
                 }
             }
 
@@ -156,7 +160,7 @@ public class ServiceProviderHome extends AppCompatActivity {
                     caterer_user_db.child("name").setValue(updateName);
                     caterer_user_db.child("phone").setValue(updateCntact);
                     caterer_user_db.child("charges").setValue(updateCharges);
-                    caterer_user_db.child("Availability").setValue("Available");
+                    caterer_user_db.child("Availability").setValue("Not Available");
 
                 }
 
@@ -166,7 +170,7 @@ public class ServiceProviderHome extends AppCompatActivity {
                     caterer_user_db.child("name").setValue(updateName);
                     caterer_user_db.child("phone").setValue(updateCntact);
                     caterer_user_db.child("charges").setValue(updateCharges);
-                    caterer_user_db.child("Availability").setValue("Available");
+                    caterer_user_db.child("Availability").setValue("Not Available");
                 }
             }
 
