@@ -36,8 +36,9 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="15dp"
         android:text="Share with friends"
-        android:background="@drawable/savebtn_style"
-        android:padding="10dp"/>
+        android:background="@drawable/login"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/memories_list"

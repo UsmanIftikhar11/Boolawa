@@ -8,19 +8,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="Photgrapher"/>
+        android:background="@drawable/login"
+        android:text="Photgrapher"
+        android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/btn_caterer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="-5dp"
+        android:background="@drawable/login"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/btn_photographer"
-        android:text="caterer"/>
+        android:text="caterer"
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/txt_photogrpaher"

@@ -2,7 +2,10 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    android:elevation="8dp"
+    app:cardCornerRadius="6dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,10 +20,10 @@
             android:paddingRight="75dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:text="CompanyName"
+            android:text="user"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#000000"/>
+            android:textColor="@color/colorPrimaryDark"/>
 
         <ImageView
             android:id="@+id/next"
@@ -30,6 +33,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:paddingTop="10dp"/>
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

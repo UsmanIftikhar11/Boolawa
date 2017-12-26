@@ -25,35 +25,44 @@
 
             <Button
                 android:id="@+id/btn_sendGmail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/add_btn"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF"
                 android:text="Send using gmail"
-                android:background="@drawable/savebtn_style"
+                android:background="@drawable/login"
                 android:padding="10dp"/>
 
             <Button
                 android:id="@+id/btn_sendWhatsapp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_sendGmail"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF"
                 android:text="send using whatsapp"
-                android:background="@drawable/savebtn_style"
+                android:background="@drawable/login"
                 android:padding="10dp"/>
 
             <Button
                 android:id="@+id/btn_inApp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btn_sendWhatsapp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF"
                 android:text="Create Invitation"
-                android:background="@drawable/savebtn_style"
+                android:background="@drawable/login"
                 android:padding="10dp"
                 android:layout_marginBottom="30dp"/>
 
