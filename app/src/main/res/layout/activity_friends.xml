@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hamziii.boolawa.Friends"
+    tools:context="com.example.project.boolawa.Friends"
     android:background="@color/colorPrimaryDark">
 
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Friends"
-        style="@style/login"
+        style="@style/button_style"
         android:textSize="15sp"/>
 
     <Button
@@ -24,7 +24,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/btn_friends"
         android:text="Friend Requests"
-        style="@style/login"
+        style="@style/button_style"
         android:textSize="15sp"/>
 
     <android.support.v7.widget.RecyclerView

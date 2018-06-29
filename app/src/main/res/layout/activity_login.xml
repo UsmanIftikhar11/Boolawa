@@ -7,7 +7,7 @@
     android:paddingRight="16dp"
     android:background="@color/colorPrimaryDark"
 
-    tools:context="com.example.hamziii.boolawa.LoginActivity">
+    tools:context="com.example.project.boolawa.LoginActivity">
 
 
     <ScrollView
@@ -64,13 +64,12 @@
             android:text="Forgot Password?"
             android:textColor="@color/white"
             android:textSize="17sp"
-            android:onClick="goToPasswordResetActivity"
             />
 
         <Button
             android:id="@+id/login_button111"
             android:text="Login"
-            style="@style/login"
+            style="@style/button_style"
             android:layout_marginTop="50dp"
             />
 
@@ -95,7 +94,7 @@
         <Button
             android:id="@+id/signup_button111"
             android:text="SIGNUP"
-            style="@style/login"
+            style="@style/button_style"
             android:layout_marginTop="50dp"
             />
 

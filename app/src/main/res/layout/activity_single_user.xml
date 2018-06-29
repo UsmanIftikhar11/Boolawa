@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hamziii.boolawa.SingleUser"
+    tools:context="com.example.project.boolawa.SingleUser"
     android:background="@color/colorPrimaryDark">
 
     <TextView
@@ -26,11 +26,10 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/txt_singleUserName"
         android:layout_marginTop="20dp"
-        android:background="@drawable/login"
+        style="@style/button_style"
         android:text="Send Friend Request"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:textColor="@color/white"
         android:textSize="16sp"/>
 
     <Button
@@ -40,11 +39,10 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/btn_sendReq"
         android:layout_marginTop="20dp"
-        android:background="@drawable/login"
+        style="@style/button_style"
         android:text="Decline Friend Request"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:textColor="@color/white"
         android:textSize="16sp"
         android:visibility="invisible"
         android:enabled="false"/>

@@ -7,7 +7,7 @@
     android:paddingRight="16dp"
     android:background="@color/colorPrimaryDark"
 
-    tools:context="com.example.hamziii.boolawa.SignUpActivity">
+    tools:context="com.example.project.boolawa.SignUpActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
             <Button
                 android:id="@+id/btn_update"
                 android:text="Update"
-                style="@style/login"
+                style="@style/button_style"
                 android:layout_below="@+id/txt_updateAvailability"
                 android:layout_marginTop="50dp"/>
 

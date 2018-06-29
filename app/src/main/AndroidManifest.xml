@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hamziii.boolawa">
+    package="com.example.project.boolawa">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -10,11 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.gsf.permission.READ_GSERVICES" />
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -25,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.project.boolawa.MainActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,77 +28,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name="com.example.project.boolawa.LoginActivity" />
         <activity
-            android:name=".SignUpActivity"
+            android:name="com.example.project.boolawa.SignUpActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".PasswordResetActivity" />
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".Account" />
-        <activity
-            android:name=".hiring"
-            android:label="@string/title_activity_hiring"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".sendinvitation"
-            android:label="@string/title_activity_sendinvitation"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".tools"
-            android:label="@string/title_activity_tools"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".gallery"
-            android:label="@string/title_activity_gallery"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".slideshow"
-            android:label="@string/title_activity_slideshow"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".DesignCards"
-            android:label="@string/title_activity_design_cards"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Home"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ContactUs" />
-        <activity android:name=".Help" />
-        <activity android:name=".EventDetailsFromUser" />
-        <activity android:name=".FinalizedInvitationCard" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Navigation"
-            android:label="@string/title_activity_navigation" />
-        <activity
-            android:name=".GetDirection"
-            android:label="@string/title_activity_get_direction" />
-        <activity android:name=".ServiceProviderLogin" />
-        <activity android:name=".ServiceProviderSignUp" />
-        <activity android:name=".ServiceProviderHome" />
-        <activity android:name=".AllUsers" />
-        <activity android:name=".SingleUser" />
-        <activity android:name=".Friends" />
-        <activity android:name=".InAppInvitation" />
-        <activity android:name=".UserCreatedInvitations" />
-        <activity android:name=".InvitationStatus" />
-        <activity android:name=".SingleInvitationStatus" />
-        <activity android:name=".ServceProviderShowHire"></activity>
+            android:name="com.example.project.boolawa.Home"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme" />
+        <activity android:name="com.example.project.boolawa.EventDetailsFromUser" />
+        <activity android:name="com.example.project.boolawa.FinalizedInvitationCard" />
+
+        <activity android:name="com.example.project.boolawa.ServiceProviderLogin" />
+        <activity android:name="com.example.project.boolawa.ServiceProviderSignUp" />
+        <activity android:name="com.example.project.boolawa.ServiceProviderHome" />
+        <activity android:name="com.example.project.boolawa.AllUsers" />
+        <activity android:name="com.example.project.boolawa.SingleUser" />
+        <activity android:name="com.example.project.boolawa.Friends" />
+        <activity android:name="com.example.project.boolawa.InAppInvitation" />
+        <activity android:name="com.example.project.boolawa.UserCreatedInvitations" />
+        <activity android:name="com.example.project.boolawa.ServceProviderShowHire"></activity>
     </application>
 
 </manifest>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hamziii.boolawa.EventDetailsFromUser">
+    tools:context="com.example.project.boolawa.EventDetailsFromUser">
 
 
     <TextView
@@ -82,7 +82,8 @@
         android:id="@+id/btn_done"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/login"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
         android:textSize="14sp"
         android:layout_centerHorizontal="true"
         android:text="done"

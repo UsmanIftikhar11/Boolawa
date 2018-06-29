@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hamziii.boolawa.AllUsers"
+    tools:context="com.example.project.boolawa.AllUsers"
     android:background="@color/colorPrimaryDark">
 
     <EditText
@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:text="Search"
-        style="@style/login"
+        style="@style/button_style"
         android:padding="10dp"
         android:textSize="18sp"/>
 

@@ -8,7 +8,7 @@
     android:paddingTop="16dp"
     android:background="@color/colorPrimaryDark"
 
-    tools:context="com.example.hamziii.boolawa.MainActivity">
+    tools:context="com.example.project.boolawa.MainActivity">
 
 
 

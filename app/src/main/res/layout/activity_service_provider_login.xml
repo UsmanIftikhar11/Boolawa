@@ -7,7 +7,7 @@
     android:paddingRight="16dp"
     android:background="@color/colorPrimaryDark"
 
-    tools:context="com.example.hamziii.boolawa.LoginActivity">
+    tools:context="com.example.project.boolawa.LoginActivity">
 
 
     <ScrollView
@@ -78,7 +78,7 @@
             <Button
                 android:id="@+id/serviceLogin_button"
                 android:text="Login"
-                style="@style/login"
+                style="@style/button_style"
                 android:layout_marginTop="50dp"
                 />
 
@@ -103,7 +103,7 @@
             <Button
                 android:id="@+id/serviceSignup_button"
                 android:text="SIGNUP"
-                style="@style/login"
+                style="@style/button_style"
                 android:layout_marginTop="50dp"
                 />
 
